@@ -44,17 +44,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   var finishedList = [
-    Task(title: 'saddsfasfdsafd', date: 'today', isFinished: false),
-    Task(title: 'saddsfasfdsafd', date: 'today', isFinished: false),
-    Task(title: 'saddsfasfdsafd', date: 'today', isFinished: false),
+    Task(title: 'Study for SW Exam', date: 'today', isFinished: false),
+    Task(title: 'Clean up my room', date: 'today', isFinished: false),
+    Task(title: 'Go to gym', date: 'today', isFinished: false),
   ];
   var taskList = [
-    Task(title: 'test', date: 'today', isFinished: false),
-    Task(title: 'test1', date: 'today', isFinished: false),
-    Task(title: 'test2', date: 'today', isFinished: false),
-    Task(title: 'test3', date: 'today', isFinished: false),
-    Task(title: 'test4', date: 'today', isFinished: false),
-    Task(title: 'test5', date: 'today', isFinished: false)
+    Task(title: 'Wash the car', date: 'today', isFinished: false),
+    Task(title: 'buy new clothes', date: 'today', isFinished: false),
+    Task(
+        title: 'Start coding flutter project',
+        date: 'today',
+        isFinished: false),
+    Task(
+        title: 'Solve Machine Learning homework',
+        date: 'today',
+        isFinished: false),
+    Task(title: 'Prepare RTIT project', date: 'today', isFinished: false),
+    Task(title: 'buy a new perfume', date: 'today', isFinished: false)
   ];
 
   @override
