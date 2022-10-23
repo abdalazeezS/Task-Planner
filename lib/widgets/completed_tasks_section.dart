@@ -1,13 +1,25 @@
+import 'package:Task_Planner/models/task.dart';
 import 'package:flutter/material.dart';
 
 import 'completed_task_record.dart';
 
-class CompletedTasksSection extends StatelessWidget {
+class CompletedTasksSection extends StatefulWidget {
   const CompletedTasksSection({
     Key? key,
     required this.finishedList,
   }) : super(key: key);
-  final List finishedList;
+  final List<Task> finishedList;
+
+  @override
+  State<CompletedTasksSection> createState() => _CompletedTasksSectionState();
+}
+
+class _CompletedTasksSectionState extends State<CompletedTasksSection> {
+  void removeCompletedTask(Task task) {
+    setState(() {
+      widget.finishedList.remove(task);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +35,7 @@ class CompletedTasksSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ListTile(
+          ListTile(
             horizontalTitleGap: 1,
             title: Text(
               'COMPLETE',
@@ -32,11 +44,17 @@ class CompletedTasksSection extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            trailing: Text('1'),
+            trailing: Text(widget.finishedList.length.toString()),
           ),
-          ...finishedList.asMap().entries.map((e) {
+          ...widget.finishedList.asMap().entries.map((e) {
             int index = e.key;
-            return CompletedTaskRecord(task: e.value);
+            return CompletedTaskRecord(
+              task: e.value,
+              onDrag: () {
+                removeCompletedTask(e.value);
+                print(widget.finishedList.toString());
+              },
+            );
           })
         ],
       ),
