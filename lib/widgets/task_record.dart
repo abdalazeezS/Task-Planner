@@ -32,9 +32,9 @@ class _TaskRecordState extends State<TaskRecord> {
       title: Text(widget.task.title),
       trailing: Text(
         widget.task.date,
-        style: const TextStyle(
-          color: Colors.blueAccent,
-        ),
+        style: widget.task.date == 'Missing'
+            ? TextStyle(color: Colors.redAccent)
+            : TextStyle(color: Colors.blueAccent),
       ),
     );
   }

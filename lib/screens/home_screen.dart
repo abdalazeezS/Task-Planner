@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/task.dart';
 import 'package:Task_Planner/constants.dart' as constants;
 
+import '../widgets/app_drawer.dart';
 import '../widgets/completed_tasks_section.dart';
 import '../widgets/tasks_section.dart';
 
@@ -45,13 +47,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  var taskDate = DateTime.now();
+  String taskDate = 'Today';
+
+  // To check if the task date is overdue
+  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: constants.backgroundColor,
-      drawer: Drawer(),
+      drawer: AppDrawer(),
       appBar: buildAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -102,17 +112,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context: context,
                                       currentDate: DateTime.now(),
                                       initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
+                                      firstDate: DateTime(2022),
                                       lastDate: DateTime.now().add(
                                         const Duration(days: 365),
                                       ),
                                     );
 
                                     if (datePicked != null) {
-                                      setState(() {
-                                        taskDate = datePicked;
-                                      });
+                                      if (calculateDifference(datePicked) ==
+                                          1) {
+                                        taskDate = "Tomorrow";
+                                      } else if (calculateDifference(
+                                              datePicked) ==
+                                          -1) {
+                                        taskDate = "Missing";
+                                      } else
+                                        taskDate = DateFormat('dd/MM/yyyy')
+                                            .format(datePicked);
                                     }
+                                    setState(() {});
                                   },
                                 ),
                                 IconButton(
@@ -157,6 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           );
                                         });
                                         Navigator.of(context).pop();
+                                        newTaskController.clear();
                                       },
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all(
