@@ -1,5 +1,6 @@
 class Task {
-  String title, date;
+  String title;
+  DateTime date;
   bool isFinished;
 
   Task({

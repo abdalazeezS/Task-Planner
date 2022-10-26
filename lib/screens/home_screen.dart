@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../models/task.dart';
 import 'package:Task_Planner/constants.dart' as constants;
@@ -17,24 +16,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var finishedList = [
-    Task(title: 'Study for SW Exam', date: 'today', isFinished: false),
-    Task(title: 'Clean up my room', date: 'today', isFinished: false),
-    Task(title: 'Go to gym', date: 'today', isFinished: false),
+    Task(title: 'Study for SW Exam', date: DateTime.now(), isFinished: false),
+    Task(title: 'Clean up my room', date: DateTime.now(), isFinished: false),
+    Task(title: 'Go to gym', date: DateTime.now(), isFinished: false),
   ];
 
   var taskList = [
-    Task(title: 'Wash the car', date: 'today', isFinished: false),
-    Task(title: 'buy new clothes', date: 'today', isFinished: false),
+    Task(title: 'Wash the car', date: DateTime.now(), isFinished: false),
+    Task(title: 'buy new clothes', date: DateTime.now(), isFinished: false),
     Task(
         title: 'Start coding flutter project',
-        date: 'today',
+        date: DateTime.now(),
         isFinished: false),
     Task(
         title: 'Solve Machine Learning homework',
-        date: 'today',
+        date: DateTime.now(),
         isFinished: false),
-    Task(title: 'Prepare RTIT project', date: 'today', isFinished: false),
-    Task(title: 'buy a new perfume', date: 'today', isFinished: false)
+    Task(
+        title: 'Prepare RTIT project', date: DateTime.now(), isFinished: false),
+    Task(title: 'buy a new perfume', date: DateTime.now(), isFinished: false)
   ];
   int bottomNavigationBarSelectedIndex = 0;
   TextEditingController newTaskController = TextEditingController();
@@ -47,15 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  String taskDate = 'Today';
-
-  // To check if the task date is overdue
-  int calculateDifference(DateTime date) {
-    DateTime now = DateTime.now();
-    return DateTime(date.year, date.month, date.day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
-  }
+  var taskDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -117,20 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const Duration(days: 365),
                                       ),
                                     );
-
-                                    if (datePicked != null) {
-                                      if (calculateDifference(datePicked) ==
-                                          1) {
-                                        taskDate = "Tomorrow";
-                                      } else if (calculateDifference(
-                                              datePicked) ==
-                                          -1) {
-                                        taskDate = "Missing";
-                                      } else
-                                        taskDate = DateFormat('dd/MM/yyyy')
-                                            .format(datePicked);
-                                    }
-                                    setState(() {});
+                                    setState(() {
+                                      if (datePicked != null)
+                                        taskDate = datePicked;
+                                    });
+                                    print(datePicked.toString());
                                   },
                                 ),
                                 IconButton(
@@ -169,13 +152,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                           taskList.add(
                                             Task(
                                               title: newTaskController.text,
-                                              date: taskDate.toString(),
+                                              date: taskDate,
                                               isFinished: false,
                                             ),
                                           );
                                         });
                                         Navigator.of(context).pop();
                                         newTaskController.clear();
+                                        print(taskDate);
                                       },
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all(
