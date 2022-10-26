@@ -26,7 +26,7 @@ class _CompletedTasksSectionState extends State<CompletedTasksSection> {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(
-        minHeight: 150,
+        minHeight: 50,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
