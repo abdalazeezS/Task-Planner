@@ -1,11 +1,13 @@
+import 'package:Task_Planner/Providers/task_priority_provider.dart';
+import 'package:Task_Planner/constants.dart' as constants;
+import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../models/task.dart';
-import 'package:Task_Planner/constants.dart' as constants;
-
 import '../widgets/app_drawer.dart';
-import '../widgets/completed_tasks_section.dart';
-import '../widgets/tasks_section.dart';
+import '../widgets/completed_tasks/completed_tasks_section.dart';
+import '../widgets/current_tasks/tasks_section.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -13,6 +15,8 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
+enum TaskPriority { high, medium, low, none }
 
 class _HomeScreenState extends State<HomeScreen> {
   var finishedList = [
@@ -37,24 +41,21 @@ class _HomeScreenState extends State<HomeScreen> {
     Task(title: 'buy a new perfume', date: DateTime.now(), isFinished: false)
   ];
   int bottomNavigationBarSelectedIndex = 0;
-  TextEditingController newTaskController = TextEditingController();
-
-  void checkTask(Task task) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    setState(() {
-      finishedList.add(task);
-      taskList.remove(task);
-    });
-  }
 
   var taskDate = DateTime.now();
+
+  var taskPriority = '';
+
+  TextEditingController newTaskController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: constants.backgroundColor,
       drawer: AppDrawer(),
-      appBar: buildAppBar(),
+      appBar: CustomAppBar(
+        title: 'Inbox',
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -113,13 +114,67 @@ class _HomeScreenState extends State<HomeScreen> {
                                       if (datePicked != null)
                                         taskDate = datePicked;
                                     });
-                                    print(datePicked.toString());
                                   },
                                 ),
-                                IconButton(
-                                  color: ThemeData().disabledColor,
-                                  icon: const Icon(Icons.flag),
-                                  onPressed: () {},
+                                PopupMenuButton<TaskPriority>(
+                                  onSelected: (item) {
+                                    Provider.of<TaskPriorityProvider>(
+                                      context,
+                                      listen: false,
+                                    ).setTaskPriority(item.name);
+
+                                    newTaskController.text =
+                                        Provider.of<TaskPriorityProvider>(
+                                      context,
+                                      listen: false,
+                                    ).taskPriority;
+                                  },
+                                  icon: Icon(
+                                    Icons.flag,
+                                    color: ThemeData().disabledColor,
+                                  ),
+                                  itemBuilder: (BuildContext context) => [
+                                    PopupMenuItem(
+                                      value: TaskPriority.high,
+                                      child: ListTile(
+                                        title: Text('High Priority'),
+                                        leading: Icon(
+                                          Icons.flag,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: TaskPriority.medium,
+                                      child: ListTile(
+                                        title: Text('Medium Priority'),
+                                        leading: Icon(
+                                          Icons.flag,
+                                          color: Colors.yellow,
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: TaskPriority.low,
+                                      child: ListTile(
+                                        title: Text('Low Priority'),
+                                        leading: Icon(
+                                          Icons.flag,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: TaskPriority.none,
+                                      child: ListTile(
+                                        title: Text('No Priority'),
+                                        leading: Icon(
+                                          Icons.flag,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                                 IconButton(
                                   color: ThemeData().disabledColor,
@@ -189,21 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AppBar buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      foregroundColor: Colors.black,
-      elevation: 0,
-      title: Text('Inbox'),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.more_vert),
-        ),
-      ],
-    );
-  }
-
   BottomNavigationBar buildBottomNavigationBar() {
     return BottomNavigationBar(
       elevation: 1,
@@ -228,5 +268,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+
+  void checkTask(Task task) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      finishedList.add(task);
+      taskList.remove(task);
+    });
   }
 }
