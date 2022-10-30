@@ -1,21 +1,10 @@
-import 'package:Task_Planner/models/category.dart';
 import 'package:flutter/material.dart';
+import 'package:Task_Planner/constants.dart' as constants;
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
     Key? key,
   }) : super(key: key);
-
-  var categories = [
-    Category(name: 'Today', icon: Icons.today),
-    Category(name: 'Inbox', icon: Icons.inbox),
-    Category(name: 'Welcome', icon: Icons.waving_hand_sharp),
-    Category(name: 'Work', icon: Icons.today),
-    Category(name: 'Personal', icon: Icons.work),
-    Category(name: 'Shopping', icon: Icons.shopping_cart_rounded),
-    Category(name: 'Wish List', icon: Icons.hourglass_top),
-    Category(name: 'Birthday', icon: Icons.cake),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +41,11 @@ class AppDrawer extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: categories.length,
+              itemCount: constants.categories.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: Icon(categories[index].icon),
-                  title: Text(categories[index].name),
+                  leading: Icon(constants.categories[index].icon),
+                  title: Text(constants.categories[index].name),
                 );
               },
             ),

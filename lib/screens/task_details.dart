@@ -50,6 +50,7 @@ class TaskDetails extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
                   contentPadding: EdgeInsets.zero,
@@ -65,6 +66,28 @@ class TaskDetails extends StatelessWidget {
                     ),
                   ),
                   trailing: Icon(Icons.flag),
+                ),
+                Text(
+                  task.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black.withOpacity(0.87),
+                    fontSize: 25,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  child: TextField(
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      hintText: 'Description',
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 8,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

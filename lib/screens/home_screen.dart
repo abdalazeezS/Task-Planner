@@ -78,6 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               context: context,
               builder: (_) {
+                var taskPriorityColor = Provider.of<TaskPriorityProvider>(
+                  context,
+                  listen: false,
+                ).taskPriorityColor;
+
+                var taskPriorityName = Provider.of<TaskPriorityProvider>(
+                  context,
+                  listen: false,
+                ).taskPriority;
+
                 return Padding(
                   padding: constants.space8,
                   child: Column(
@@ -117,22 +127,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
                                 PopupMenuButton<TaskPriority>(
+                                  child: TextButton.icon(
+                                    onPressed: null,
+                                    icon: Icon(
+                                      Icons.flag,
+                                      color: taskPriorityColor,
+                                    ),
+                                    label: Text(
+                                      taskPriorityName,
+                                      style: TextStyle(
+                                        color: taskPriorityColor,
+                                      ),
+                                    ),
+                                  ),
                                   onSelected: (item) {
                                     Provider.of<TaskPriorityProvider>(
                                       context,
                                       listen: false,
                                     ).setTaskPriority(item.name);
-
-                                    newTaskController.text =
-                                        Provider.of<TaskPriorityProvider>(
-                                      context,
-                                      listen: false,
-                                    ).taskPriority;
                                   },
-                                  icon: Icon(
-                                    Icons.flag,
-                                    color: ThemeData().disabledColor,
-                                  ),
                                   itemBuilder: (BuildContext context) => [
                                     PopupMenuItem(
                                       value: TaskPriority.high,
@@ -181,17 +194,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   icon: const Icon(Icons.local_offer),
                                   onPressed: () {},
                                 ),
-                                IconButton(
-                                  color: ThemeData().disabledColor,
-                                  icon: const Icon(Icons.inbox),
-                                  onPressed: () {},
-                                ),
-                                Text(
-                                  'Inbox',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: ThemeData().disabledColor,
+                                PopupMenuButton(
+                                  child: TextButton.icon(
+                                    onPressed: null,
+                                    icon: Icon(Icons.inbox),
+                                    label: Text('Inbox'),
                                   ),
+                                  onSelected: (item) {},
+                                  itemBuilder: (BuildContext context) => [
+                                    ...constants.categories
+                                        .map(
+                                          (e) => PopupMenuItem(
+                                            child: Text(e.name),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ],
                                 ),
                               ],
                             ),
