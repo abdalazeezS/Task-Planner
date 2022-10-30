@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/task.dart';
+import '../../models/task.dart';
 
 class CompletedTaskRecord extends StatelessWidget {
   const CompletedTaskRecord({

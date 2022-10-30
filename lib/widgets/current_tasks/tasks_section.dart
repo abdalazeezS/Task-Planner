@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:Task_Planner/widgets/task_record.dart';
+import 'package:Task_Planner/widgets/current_tasks/task_record.dart';
 
-import '../models/task.dart';
+import '../../models/task.dart';
 
 class TasksSection extends StatefulWidget {
   const TasksSection({
@@ -17,8 +17,6 @@ class TasksSection extends StatefulWidget {
 }
 
 class _TasksSectionState extends State<TasksSection> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(

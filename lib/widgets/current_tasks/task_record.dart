@@ -2,7 +2,7 @@ import 'package:Task_Planner/screens/task_details.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/task.dart';
+import '../../models/task.dart';
 
 class TaskRecord extends StatefulWidget {
   const TaskRecord({
