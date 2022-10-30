@@ -47,7 +47,6 @@ class _CompletedTasksSectionState extends State<CompletedTasksSection> {
             trailing: Text(widget.finishedList.length.toString()),
           ),
           ...widget.finishedList.asMap().entries.map((e) {
-            int index = e.key;
             return CompletedTaskRecord(
               task: e.value,
               onDrag: () {
