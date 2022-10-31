@@ -3,13 +3,13 @@ import 'package:Task_Planner/Providers/task_priority_provider.dart';
 import 'package:Task_Planner/constants.dart';
 import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/category.dart';
 import '../models/task.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/completed_tasks/completed_tasks_section.dart';
 import '../widgets/current_tasks/tasks_section.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -39,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: space16,
             child: Column(
               children: [
-                TasksSection(tasksList: taskList, onCheck: checkTask),
+                TasksSection(
+                  tasksList: tasksList[Categories.inbox]!,
+                  onCheck: checkTask,
+                ),
                 sizedBox16Height,
                 CompletedTasksSection(finishedList: finishedList),
               ],
@@ -154,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ).setTaskCategory(item);
                                 },
                                 itemBuilder: (BuildContext context) => [
-                                  ...categoriesList
+                                  ...Categories.categoriesList
                                       .map(
                                         (e) => PopupMenuItem<Category>(
                                           child: ListTile(
@@ -178,7 +181,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? null
                                   : () {
                                       setState(() {
-                                        taskList.add(
+                                        tasksList[Provider.of<
+                                                        TaskCategoryProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .taskCategory]!
+                                            .add(
                                           Task(
                                             title: newTaskController.text,
                                             date: taskDate,
@@ -228,17 +236,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void resetBottomSheet(BuildContext ctx) {
-    Provider.of<TaskPriorityProvider>(
-      ctx,
-      listen: false,
-    ).resetPriority();
-    Provider.of<TaskCategoryProvider>(
-      ctx,
-      listen: false,
-    ).resetTaskCategory();
-  }
-
   BottomNavigationBar buildBottomNavigationBar() {
     return BottomNavigationBar(
       elevation: 1,
@@ -273,5 +270,16 @@ class _HomeScreenState extends State<HomeScreen> {
       finishedList.add(task);
       taskList.remove(task);
     });
+  }
+
+  void resetBottomSheet(BuildContext ctx) {
+    Provider.of<TaskPriorityProvider>(
+      ctx,
+      listen: false,
+    ).resetPriority();
+    Provider.of<TaskCategoryProvider>(
+      ctx,
+      listen: false,
+    ).resetTaskCategory();
   }
 }

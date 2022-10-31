@@ -6,13 +6,13 @@ import '../models/category.dart';
 class TaskCategoryProvider with ChangeNotifier {
   Category taskCategory = Categories.inbox;
 
-  setTaskCategory(Category category) {
-    taskCategory = category;
+  resetTaskCategory() {
+    taskCategory = Categories.inbox;
     notifyListeners();
   }
 
-  resetTaskCategory(){
-    taskCategory = Categories.inbox;
+  setTaskCategory(Category category) {
+    taskCategory = category;
     notifyListeners();
   }
 }

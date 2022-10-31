@@ -20,18 +20,19 @@ class Categories {
   static Category wishList =
       Category(name: 'Wish List', icon: Icons.hourglass_top);
   static Category birthday = Category(name: 'Birthday', icon: Icons.cake);
+
+  static List<Category> categoriesList = [
+    inbox,
+    today,
+    welcome,
+    work,
+    personal,
+    shopping,
+    wishList,
+    birthday,
+  ];
 }
 
-List<Category> categoriesList = [
-  Categories.inbox,
-  Categories.today,
-  Categories.welcome,
-  Categories.work,
-  Categories.personal,
-  Categories.shopping,
-  Categories.wishList,
-  Categories.birthday,
-];
 var finishedList = [
   Task(
     title: 'Study for SW Exam',
@@ -93,6 +94,11 @@ Map<String, Color> priorityColorMap = {
   'medium': Colors.yellow,
   'low': Colors.blue,
   'none': Colors.black38,
+};
+
+Map<Category, List<Task>> tasksList = {
+  Categories.inbox: [],
+  Categories.welcome: [],
 };
 
 List<PopupMenuEntry<TaskPriority>> taskPriorityOptionList() {
