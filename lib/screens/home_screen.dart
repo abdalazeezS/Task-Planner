@@ -1,8 +1,10 @@
+import 'package:Task_Planner/Providers/task_category_provider.dart';
 import 'package:Task_Planner/Providers/task_priority_provider.dart';
 import 'package:Task_Planner/constants.dart';
 import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../models/category.dart';
 import '../models/task.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/completed_tasks/completed_tasks_section.dart';
@@ -17,66 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var finishedList = [
-    Task(
-      title: 'Study for SW Exam',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.none,
-    ),
-    Task(
-      title: 'Clean up my room',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.none,
-    ),
-    Task(
-      title: 'Go to gym',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.none,
-    ),
-  ];
-
-  var taskList = [
-    Task(
-      title: 'Wash the car',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.high,
-    ),
-    Task(
-      title: 'buy new clothes',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.low,
-    ),
-    Task(
-      title: 'Start coding flutter project',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.medium,
-    ),
-    Task(
-      title: 'Solve Machine Learning homework',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.none,
-    ),
-    Task(
-      title: 'Prepare RTIT project',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.none,
-    ),
-    Task(
-      title: 'buy a new perfume',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriority.none,
-    )
-  ];
-
   int bottomNavigationBarSelectedIndex = 0;
 
   var taskDate = DateTime.now();
@@ -189,18 +131,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                 icon: const Icon(Icons.local_offer),
                                 onPressed: () {},
                               ),
-                              PopupMenuButton(
+                              PopupMenuButton<Category>(
                                 child: TextButton.icon(
                                   onPressed: null,
-                                  icon: Icon(Icons.inbox),
-                                  label: Text('Inbox'),
+                                  icon: Icon(
+                                    Provider.of<TaskCategoryProvider>(
+                                      context,
+                                      listen: false,
+                                    ).taskCategory.icon,
+                                  ),
+                                  label: Text(
+                                    Provider.of<TaskCategoryProvider>(
+                                      context,
+                                      listen: false,
+                                    ).taskCategory.name,
+                                  ),
                                 ),
-                                onSelected: (item) {},
+                                onSelected: (item) {
+                                  Provider.of<TaskCategoryProvider>(
+                                    context,
+                                    listen: false,
+                                  ).setTaskCategory(item);
+                                },
                                 itemBuilder: (BuildContext context) => [
-                                  ...categories
+                                  ...categoriesList
                                       .map(
-                                        (e) => PopupMenuItem(
+                                        (e) => PopupMenuItem<Category>(
                                           child: Text(e.name),
+                                          value: e,
                                         ),
                                       )
                                       .toList(),

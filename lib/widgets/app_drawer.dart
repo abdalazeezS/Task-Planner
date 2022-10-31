@@ -41,11 +41,11 @@ class AppDrawer extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: constants.categories.length,
+              itemCount: constants.categoriesList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: Icon(constants.categories[index].icon),
-                  title: Text(constants.categories[index].name),
+                  leading: Icon(constants.categoriesList[index].icon),
+                  title: Text(constants.categoriesList[index].name),
                 );
               },
             ),

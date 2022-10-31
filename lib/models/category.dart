@@ -4,5 +4,8 @@ class Category {
   String name;
   IconData icon;
 
-  Category({required this.name, required this.icon});
+  Category({
+    required this.name,
+    required this.icon,
+  });
 }

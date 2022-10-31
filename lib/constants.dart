@@ -1,21 +1,89 @@
 import 'package:flutter/material.dart';
 
 import 'models/category.dart';
+import 'models/task.dart';
 
 const Color backgroundColor = Color(0xFFF2F5FE);
 const EdgeInsets space16 = EdgeInsets.all(16.0);
 const EdgeInsets space8 = EdgeInsets.all(8.0);
 const SizedBox sizedBox16Height = SizedBox(height: 16);
 
-var categories = [
-  Category(name: 'Today', icon: Icons.today),
-  Category(name: 'Inbox', icon: Icons.inbox),
-  Category(name: 'Welcome', icon: Icons.waving_hand_sharp),
-  Category(name: 'Work', icon: Icons.today),
-  Category(name: 'Personal', icon: Icons.work),
-  Category(name: 'Shopping', icon: Icons.shopping_cart_rounded),
-  Category(name: 'Wish List', icon: Icons.hourglass_top),
-  Category(name: 'Birthday', icon: Icons.cake),
+class Categories {
+  static Category today = Category(name: 'Today', icon: Icons.today);
+  static Category inbox = Category(name: 'Inbox', icon: Icons.inbox);
+  static Category welcome =
+      Category(name: 'Welcome', icon: Icons.waving_hand_sharp);
+  static Category work = Category(name: 'Work', icon: Icons.today);
+  static Category personal = Category(name: 'Personal', icon: Icons.work);
+  static Category shopping =
+      Category(name: 'Shopping', icon: Icons.shopping_cart_rounded);
+  static Category wishList =
+      Category(name: 'Wish List', icon: Icons.hourglass_top);
+  static Category birthday = Category(name: 'Birthday', icon: Icons.cake);
+}
+
+List<Category> categoriesList = [
+  Categories.inbox,
+  Categories.today,
+  Categories.welcome,
+  Categories.work,
+  Categories.personal,
+  Categories.shopping,
+  Categories.wishList,
+  Categories.birthday,
+];
+var finishedList = [
+  Task(
+    title: 'Study for SW Exam',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.none,
+  ),
+  Task(
+    title: 'Clean up my room',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.none,
+  ),
+  Task(
+    title: 'Go to gym',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.none,
+  ),
+];
+
+var taskList = [
+  Task(
+    title: 'Wash the car',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.high,
+  ),
+  Task(
+    title: 'buy new clothes',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.low,
+  ),
+  Task(
+    title: 'Start coding flutter project',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.medium,
+  ),
+  Task(
+    title: 'Prepare RTIT project',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.none,
+  ),
+  Task(
+    title: 'buy a new perfume',
+    date: DateTime.now(),
+    isFinished: false,
+    taskPriority: TaskPriority.none,
+  )
 ];
 
 enum TaskPriority { high, medium, low, none }
