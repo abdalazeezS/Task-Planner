@@ -3,7 +3,16 @@ import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(
+      MultiProvider(
+        child: MyApp(),
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => TaskPriorityProvider(),
+          ),
+        ],
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,10 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Task Planner',
-      home: ChangeNotifierProvider(
-        child: HomeScreen(),
-        create: (_) => TaskPriorityProvider(),
-      ),
+      home: HomeScreen(),
       routes: {
         'home': (context) => HomeScreen(),
       },

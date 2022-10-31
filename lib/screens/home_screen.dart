@@ -72,144 +72,148 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              context: context,
-              builder: (_) {
-                var taskPriorityColor = Provider.of<TaskPriorityProvider>(
-                  context,
-                  listen: false,
-                ).taskPriorityColor;
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            context: context,
+            builder: (_) {
+              var taskPriorityColor = Provider.of<TaskPriorityProvider>(
+                context,
+                listen: false,
+              ).taskPriorityColor;
 
-                var taskPriorityName = Provider.of<TaskPriorityProvider>(
-                  context,
-                  listen: false,
-                ).taskPriority;
+              var taskPriorityName = Provider.of<TaskPriorityProvider>(
+                context,
+                listen: false,
+              ).taskPriority;
 
-                return Padding(
-                  padding: constants.space8,
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: newTaskController,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                          hintText: 'New Task',
-                        ),
+              return Padding(
+                padding: constants.space8,
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: newTaskController,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: 'New Task',
                       ),
-                      constants.sizedBox16Height,
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  color: ThemeData().disabledColor,
-                                  icon: const Icon(
-                                    Icons.calendar_month_rounded,
-                                  ),
-                                  onPressed: () async {
-                                    DateTime? datePicked = await showDatePicker(
-                                      context: context,
-                                      currentDate: DateTime.now(),
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2022),
-                                      lastDate: DateTime.now().add(
-                                        const Duration(days: 365),
-                                      ),
-                                    );
-                                    setState(() {
-                                      if (datePicked != null)
-                                        taskDate = datePicked;
-                                    });
-                                  },
+                    ),
+                    constants.sizedBox16Height,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
+                              IconButton(
+                                color: ThemeData().disabledColor,
+                                icon: const Icon(
+                                  Icons.calendar_month_rounded,
                                 ),
-                                PopupMenuButton<TaskPriority>(
-                                  child: TextButton.icon(
-                                    onPressed: null,
-                                    icon: Icon(
-                                      Icons.flag,
+                                onPressed: () async {
+                                  DateTime? datePicked = await showDatePicker(
+                                    context: context,
+                                    currentDate: DateTime.now(),
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2022),
+                                    lastDate: DateTime.now().add(
+                                      const Duration(days: 365),
+                                    ),
+                                  );
+                                  setState(() {
+                                    if (datePicked != null)
+                                      taskDate = datePicked;
+                                  });
+                                },
+                              ),
+                              PopupMenuButton<TaskPriority>(
+                                child: TextButton.icon(
+                                  onPressed: null,
+                                  icon: Icon(
+                                    Icons.flag,
+                                    color: taskPriorityColor,
+                                  ),
+                                  label: Text(
+                                    taskPriorityName,
+                                    style: TextStyle(
                                       color: taskPriorityColor,
                                     ),
-                                    label: Text(
-                                      taskPriorityName,
-                                      style: TextStyle(
-                                        color: taskPriorityColor,
-                                      ),
-                                    ),
                                   ),
-                                  onSelected: (item) {
-                                    Provider.of<TaskPriorityProvider>(
-                                      context,
-                                      listen: false,
-                                    ).setTaskPriority(item.name);
-                                  },
-                                  itemBuilder: (BuildContext context) =>
-                                      taskPriorityOptionList(),
                                 ),
-                                IconButton(
-                                  color: ThemeData().disabledColor,
-                                  icon: const Icon(Icons.local_offer),
-                                  onPressed: () {},
+                                onSelected: (item) {
+                                  Provider.of<TaskPriorityProvider>(
+                                    context,
+                                    listen: false,
+                                  ).setTaskPriority(item.name);
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    taskPriorityOptionList(),
+                              ),
+                              IconButton(
+                                color: ThemeData().disabledColor,
+                                icon: const Icon(Icons.local_offer),
+                                onPressed: () {},
+                              ),
+                              PopupMenuButton(
+                                child: TextButton.icon(
+                                  onPressed: null,
+                                  icon: Icon(Icons.inbox),
+                                  label: Text('Inbox'),
                                 ),
-                                PopupMenuButton(
-                                  child: TextButton.icon(
-                                    onPressed: null,
-                                    icon: Icon(Icons.inbox),
-                                    label: Text('Inbox'),
-                                  ),
-                                  onSelected: (item) {},
-                                  itemBuilder: (BuildContext context) => [
-                                    ...constants.categories
-                                        .map(
-                                          (e) => PopupMenuItem(
-                                            child: Text(e.name),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                onSelected: (item) {},
+                                itemBuilder: (BuildContext context) => [
+                                  ...constants.categories
+                                      .map(
+                                        (e) => PopupMenuItem(
+                                          child: Text(e.name),
+                                        ),
+                                      )
+                                      .toList(),
+                                ],
+                              ),
+                            ],
                           ),
-                          ValueListenableBuilder(
-                            valueListenable: newTaskController,
-                            builder: ((context, value, child) {
-                              return ElevatedButton(
-                                onPressed: value.text.isEmpty
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          taskList.add(
-                                            Task(
-                                              title: newTaskController.text,
-                                              date: taskDate,
-                                              isFinished: false,
-                                            ),
-                                          );
-                                        });
-                                        Navigator.of(context).pop();
-                                        newTaskController.clear();
-                                        print(taskDate);
-                                      },
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: newTaskController,
+                          builder: ((context, value, child) {
+                            return ElevatedButton(
+                              onPressed: value.text.isEmpty
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        taskList.add(
+                                          Task(
+                                            title: newTaskController.text,
+                                            date: taskDate,
+                                            isFinished: false,
+                                          ),
+                                        );
+                                      });
+                                      Navigator.of(context).pop();
+                                      newTaskController.clear();
+                                      print(taskDate);
+                                    },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                 ),
-                                child: const Icon(Icons.send),
-                              );
-                            }),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              });
+                              ),
+                              child: const Icon(Icons.send),
+                            );
+                          }),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ).whenComplete(
+            () => Provider.of<TaskPriorityProvider>(context, listen: false)
+                .resetPriority(),
+          );
         },
         tooltip: 'Add Task',
         child: const Icon(

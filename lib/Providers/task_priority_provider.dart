@@ -21,4 +21,10 @@ class TaskPriorityProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  resetPriority() {
+    taskPriority = '';
+    taskPriorityColor = Colors.black38;
+    notifyListeners();
+  }
 }
