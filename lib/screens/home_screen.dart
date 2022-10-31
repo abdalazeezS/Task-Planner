@@ -40,11 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: 'Prepare RTIT project', date: DateTime.now(), isFinished: false),
     Task(title: 'buy a new perfume', date: DateTime.now(), isFinished: false)
   ];
+
   int bottomNavigationBarSelectedIndex = 0;
 
   var taskDate = DateTime.now();
-
-  var taskPriority = '';
 
   TextEditingController newTaskController = TextEditingController(text: '');
 
@@ -146,48 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       listen: false,
                                     ).setTaskPriority(item.name);
                                   },
-                                  itemBuilder: (BuildContext context) => [
-                                    PopupMenuItem(
-                                      value: TaskPriority.high,
-                                      child: ListTile(
-                                        title: Text('High Priority'),
-                                        leading: Icon(
-                                          Icons.flag,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: TaskPriority.medium,
-                                      child: ListTile(
-                                        title: Text('Medium Priority'),
-                                        leading: Icon(
-                                          Icons.flag,
-                                          color: Colors.yellow,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: TaskPriority.low,
-                                      child: ListTile(
-                                        title: Text('Low Priority'),
-                                        leading: Icon(
-                                          Icons.flag,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: TaskPriority.none,
-                                      child: ListTile(
-                                        title: Text('No Priority'),
-                                        leading: Icon(
-                                          Icons.flag,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                  itemBuilder: (BuildContext context) =>
+                                      taskPriorityOptionList(),
                                 ),
                                 IconButton(
                                   color: ThemeData().disabledColor,
@@ -262,6 +221,51 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  List<PopupMenuEntry<TaskPriority>> taskPriorityOptionList() {
+    return [
+      PopupMenuItem(
+        value: TaskPriority.high,
+        child: ListTile(
+          title: Text('High Priority'),
+          leading: Icon(
+            Icons.flag,
+            color: Colors.red,
+          ),
+        ),
+      ),
+      PopupMenuItem(
+        value: TaskPriority.medium,
+        child: ListTile(
+          title: Text('Medium Priority'),
+          leading: Icon(
+            Icons.flag,
+            color: Colors.yellow,
+          ),
+        ),
+      ),
+      PopupMenuItem(
+        value: TaskPriority.low,
+        child: ListTile(
+          title: Text('Low Priority'),
+          leading: Icon(
+            Icons.flag,
+            color: Colors.blue,
+          ),
+        ),
+      ),
+      PopupMenuItem(
+        value: TaskPriority.none,
+        child: ListTile(
+          title: Text('No Priority'),
+          leading: Icon(
+            Icons.flag,
+            color: Colors.grey,
+          ),
+        ),
+      )
+    ];
+  }
+
   BottomNavigationBar buildBottomNavigationBar() {
     return BottomNavigationBar(
       elevation: 1,
@@ -271,6 +275,8 @@ class _HomeScreenState extends State<HomeScreen> {
           bottomNavigationBarSelectedIndex = v;
         });
       },
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.check_box),
