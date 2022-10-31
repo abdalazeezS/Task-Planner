@@ -1,5 +1,5 @@
 import 'package:Task_Planner/Providers/task_priority_provider.dart';
-import 'package:Task_Planner/constants.dart' as constants;
+import 'package:Task_Planner/constants.dart';
 import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -16,29 +16,65 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-enum TaskPriority { high, medium, low, none }
-
 class _HomeScreenState extends State<HomeScreen> {
   var finishedList = [
-    Task(title: 'Study for SW Exam', date: DateTime.now(), isFinished: false),
-    Task(title: 'Clean up my room', date: DateTime.now(), isFinished: false),
-    Task(title: 'Go to gym', date: DateTime.now(), isFinished: false),
+    Task(
+      title: 'Study for SW Exam',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.none,
+    ),
+    Task(
+      title: 'Clean up my room',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.none,
+    ),
+    Task(
+      title: 'Go to gym',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.none,
+    ),
   ];
 
   var taskList = [
-    Task(title: 'Wash the car', date: DateTime.now(), isFinished: false),
-    Task(title: 'buy new clothes', date: DateTime.now(), isFinished: false),
     Task(
-        title: 'Start coding flutter project',
-        date: DateTime.now(),
-        isFinished: false),
+      title: 'Wash the car',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.high,
+    ),
     Task(
-        title: 'Solve Machine Learning homework',
-        date: DateTime.now(),
-        isFinished: false),
+      title: 'buy new clothes',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.low,
+    ),
     Task(
-        title: 'Prepare RTIT project', date: DateTime.now(), isFinished: false),
-    Task(title: 'buy a new perfume', date: DateTime.now(), isFinished: false)
+      title: 'Start coding flutter project',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.medium,
+    ),
+    Task(
+      title: 'Solve Machine Learning homework',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.none,
+    ),
+    Task(
+      title: 'Prepare RTIT project',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.none,
+    ),
+    Task(
+      title: 'buy a new perfume',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriority.none,
+    )
   ];
 
   int bottomNavigationBarSelectedIndex = 0;
@@ -50,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: constants.backgroundColor,
+      backgroundColor: backgroundColor,
       drawer: AppDrawer(),
       appBar: CustomAppBar(
         title: 'Inbox',
@@ -58,11 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: constants.space16,
+            padding: space16,
             child: Column(
               children: [
                 TasksSection(tasksList: taskList, onCheck: checkTask),
-                constants.sizedBox16Height,
+                sizedBox16Height,
                 CompletedTasksSection(finishedList: finishedList),
               ],
             ),
@@ -85,10 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
               var taskPriorityName = Provider.of<TaskPriorityProvider>(
                 context,
                 listen: false,
-              ).taskPriority;
+              ).taskPriorityText;
 
               return Padding(
-                padding: constants.space8,
+                padding: space8,
                 child: Column(
                   children: [
                     TextField(
@@ -98,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         hintText: 'New Task',
                       ),
                     ),
-                    constants.sizedBox16Height,
+                    sizedBox16Height,
                     Row(
                       children: [
                         Expanded(
@@ -143,10 +179,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Provider.of<TaskPriorityProvider>(
                                     context,
                                     listen: false,
-                                  ).setTaskPriority(item.name);
+                                  ).setTaskPriority(item);
                                 },
                                 itemBuilder: (BuildContext context) =>
-                                    constants.taskPriorityOptionList(),
+                                    taskPriorityOptionList(),
                               ),
                               IconButton(
                                 color: ThemeData().disabledColor,
@@ -161,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 onSelected: (item) {},
                                 itemBuilder: (BuildContext context) => [
-                                  ...constants.categories
+                                  ...categories
                                       .map(
                                         (e) => PopupMenuItem(
                                           child: Text(e.name),
@@ -186,8 +222,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                             title: newTaskController.text,
                                             date: taskDate,
                                             isFinished: false,
+                                            taskPriority: Provider.of<
+                                                TaskPriorityProvider>(
+                                              context,
+                                              listen: false,
+                                            ).taskPriority,
                                           ),
                                         );
+                                        // print("*************************** "+Provider.of<TaskPriorityProvider>(
+                                        //   context,
+                                        //   listen: false,
+                                        // ).taskPriority.toString());
                                       });
                                       Navigator.of(context).pop();
                                       newTaskController.clear();

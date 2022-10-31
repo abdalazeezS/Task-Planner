@@ -1,29 +1,25 @@
+import 'package:Task_Planner/constants.dart';
 import 'package:flutter/material.dart';
 
 class TaskPriorityProvider with ChangeNotifier {
-  Map<String, Color> priorityColorMap = {
-    'high': Colors.red,
-    'medium': Colors.yellow,
-    'low': Colors.blue,
-    'none': Colors.black38,
-  };
-
-  String taskPriority = '';
+  String taskPriorityText = '';
   Color taskPriorityColor = Colors.black38;
+  TaskPriority taskPriority = TaskPriority.none;
 
-  setTaskPriority(String priority) {
-    if (priority == 'none') {
-      taskPriority = '';
+  setTaskPriority(TaskPriority priority) {
+    if (priority.name == 'none') {
+      taskPriorityText = '';
       taskPriorityColor = Colors.black38;
     } else {
-      taskPriority = priority + ' ';
-      taskPriorityColor = priorityColorMap[taskPriority.trim()]!;
+      taskPriorityText = priority.name + ' ';
+      taskPriorityColor = priorityColorMap[taskPriorityText.trim()]!;
     }
+    taskPriority = priority;
     notifyListeners();
   }
 
   resetPriority() {
-    taskPriority = '';
+    taskPriorityText = '';
     taskPriorityColor = Colors.black38;
     notifyListeners();
   }

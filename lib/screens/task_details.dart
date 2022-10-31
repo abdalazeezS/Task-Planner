@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../constants.dart';
 import '../models/task.dart';
 
 class TaskDetails extends StatelessWidget {
@@ -65,7 +66,10 @@ class TaskDetails extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  trailing: Icon(Icons.flag),
+                  trailing: Icon(
+                    Icons.flag,
+                    color: priorityColorMap[task.taskPriority.name],
+                  ),
                 ),
                 Text(
                   task.title,
