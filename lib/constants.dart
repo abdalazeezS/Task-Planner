@@ -1,3 +1,4 @@
+import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'models/category.dart';
@@ -16,3 +17,48 @@ var categories = [
   Category(name: 'Wish List', icon: Icons.hourglass_top),
   Category(name: 'Birthday', icon: Icons.cake),
 ];
+
+List<PopupMenuEntry<TaskPriority>> taskPriorityOptionList() {
+  return [
+    PopupMenuItem(
+      value: TaskPriority.high,
+      child: ListTile(
+        title: Text('High Priority'),
+        leading: Icon(
+          Icons.flag,
+          color: Colors.red,
+        ),
+      ),
+    ),
+    PopupMenuItem(
+      value: TaskPriority.medium,
+      child: ListTile(
+        title: Text('Medium Priority'),
+        leading: Icon(
+          Icons.flag,
+          color: Colors.yellow,
+        ),
+      ),
+    ),
+    PopupMenuItem(
+      value: TaskPriority.low,
+      child: ListTile(
+        title: Text('Low Priority'),
+        leading: Icon(
+          Icons.flag,
+          color: Colors.blue,
+        ),
+      ),
+    ),
+    PopupMenuItem(
+      value: TaskPriority.none,
+      child: ListTile(
+        title: Text('No Priority'),
+        leading: Icon(
+          Icons.flag,
+          color: Colors.grey,
+        ),
+      ),
+    )
+  ];
+}

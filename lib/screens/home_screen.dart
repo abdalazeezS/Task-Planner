@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ).setTaskPriority(item.name);
                                 },
                                 itemBuilder: (BuildContext context) =>
-                                    taskPriorityOptionList(),
+                                    constants.taskPriorityOptionList(),
                               ),
                               IconButton(
                                 color: ThemeData().disabledColor,
@@ -211,8 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ).whenComplete(
-            () => Provider.of<TaskPriorityProvider>(context, listen: false)
-                .resetPriority(),
+            () => Provider.of<TaskPriorityProvider>(
+              context,
+              listen: false,
+            ).resetPriority(),
           );
         },
         tooltip: 'Add Task',
@@ -223,51 +225,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: buildBottomNavigationBar(),
     );
-  }
-
-  List<PopupMenuEntry<TaskPriority>> taskPriorityOptionList() {
-    return [
-      PopupMenuItem(
-        value: TaskPriority.high,
-        child: ListTile(
-          title: Text('High Priority'),
-          leading: Icon(
-            Icons.flag,
-            color: Colors.red,
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: TaskPriority.medium,
-        child: ListTile(
-          title: Text('Medium Priority'),
-          leading: Icon(
-            Icons.flag,
-            color: Colors.yellow,
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: TaskPriority.low,
-        child: ListTile(
-          title: Text('Low Priority'),
-          leading: Icon(
-            Icons.flag,
-            color: Colors.blue,
-          ),
-        ),
-      ),
-      PopupMenuItem(
-        value: TaskPriority.none,
-        child: ListTile(
-          title: Text('No Priority'),
-          leading: Icon(
-            Icons.flag,
-            color: Colors.grey,
-          ),
-        ),
-      )
-    ];
   }
 
   BottomNavigationBar buildBottomNavigationBar() {
