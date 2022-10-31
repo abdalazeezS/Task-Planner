@@ -157,7 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ...categoriesList
                                       .map(
                                         (e) => PopupMenuItem<Category>(
-                                          child: Text(e.name),
+                                          child: ListTile(
+                                            leading: Icon(e.icon),
+                                            title: Text(e.name),
+                                          ),
                                           value: e,
                                         ),
                                       )
@@ -213,12 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
-          ).whenComplete(
-            () => Provider.of<TaskPriorityProvider>(
-              context,
-              listen: false,
-            ).resetPriority(),
-          );
+          ).whenComplete(() => resetBottomSheet(context));
         },
         tooltip: 'Add Task',
         child: const Icon(
@@ -228,6 +226,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: buildBottomNavigationBar(),
     );
+  }
+
+  void resetBottomSheet(BuildContext ctx) {
+    Provider.of<TaskPriorityProvider>(
+      ctx,
+      listen: false,
+    ).resetPriority();
+    Provider.of<TaskCategoryProvider>(
+      ctx,
+      listen: false,
+    ).resetTaskCategory();
   }
 
   BottomNavigationBar buildBottomNavigationBar() {

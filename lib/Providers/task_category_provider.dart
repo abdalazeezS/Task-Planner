@@ -10,4 +10,9 @@ class TaskCategoryProvider with ChangeNotifier {
     taskCategory = category;
     notifyListeners();
   }
+
+  resetTaskCategory(){
+    taskCategory = Categories.inbox;
+    notifyListeners();
+  }
 }
