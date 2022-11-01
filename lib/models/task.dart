@@ -1,3 +1,5 @@
+import 'package:Task_Planner/models/category.dart';
+
 import '../constants.dart';
 
 class Task {
@@ -5,11 +7,13 @@ class Task {
   DateTime date;
   bool isFinished;
   TaskPriority taskPriority;
+  Category category;
 
   Task({
     required this.title,
     required this.date,
     required this.isFinished,
     required this.taskPriority,
+    required this.category
   });
 }

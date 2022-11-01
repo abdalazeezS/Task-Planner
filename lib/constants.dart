@@ -39,51 +39,59 @@ var finishedList = [
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.none,
+    category: Categories.inbox,
   ),
   Task(
     title: 'Clean up my room',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.none,
+    category: Categories.personal,
   ),
   Task(
     title: 'Go to gym',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.none,
+    category: Categories.inbox,
   ),
 ];
 
-var taskList = [
+var tasksList = [
   Task(
     title: 'Wash the car',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.high,
+    category: Categories.inbox,
   ),
   Task(
     title: 'buy new clothes',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.low,
+    category: Categories.personal,
   ),
   Task(
     title: 'Start coding flutter project',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.medium,
+    category: Categories.work,
   ),
   Task(
     title: 'Prepare RTIT project',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.none,
+    category: Categories.work,
   ),
   Task(
     title: 'buy a new perfume',
     date: DateTime.now(),
     isFinished: false,
     taskPriority: TaskPriority.none,
+    category: Categories.shopping,
   )
 ];
 
@@ -93,12 +101,7 @@ Map<String, Color> priorityColorMap = {
   'high': Colors.red,
   'medium': Colors.yellow,
   'low': Colors.blue,
-  'none': Colors.black38,
-};
-
-Map<Category, List<Task>> tasksList = {
-  Categories.inbox: [],
-  Categories.welcome: [],
+  'none': Colors.black38
 };
 
 List<PopupMenuEntry<TaskPriority>> taskPriorityOptionList() {
