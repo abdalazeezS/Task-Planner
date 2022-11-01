@@ -1,3 +1,4 @@
+import 'package:Task_Planner/Providers/current_category_page_provider.dart';
 import 'package:Task_Planner/Providers/task_category_provider.dart';
 import 'package:Task_Planner/Providers/task_priority_provider.dart';
 import 'package:Task_Planner/screens/home_screen.dart';
@@ -9,7 +10,8 @@ void main() => runApp(
         child: MyApp(),
         providers: [
           ChangeNotifierProvider(create: (_) => TaskPriorityProvider()),
-          ChangeNotifierProvider(create: (_) => TaskCategoryProvider())
+          ChangeNotifierProvider(create: (_) => TaskCategoryProvider()),
+          ChangeNotifierProvider(create: (_)=> CurrentCategoryPageProvider()),
         ],
       ),
     );
