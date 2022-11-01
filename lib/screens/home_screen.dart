@@ -1,3 +1,4 @@
+import 'package:Task_Planner/Providers/current_category_page_provider.dart';
 import 'package:Task_Planner/Providers/task_category_provider.dart';
 import 'package:Task_Planner/Providers/task_priority_provider.dart';
 import 'package:Task_Planner/constants.dart';
@@ -12,7 +13,9 @@ import '../widgets/completed_tasks/completed_tasks_section.dart';
 import '../widgets/current_tasks/tasks_section.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  HomeScreen({super.key, this.title});
+
+  final String? title;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -27,11 +30,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var currentCategory = Provider.of<CurrentCategoryPageProvider>(
+      context,
+      listen: false,
+    ).currentCategory;
+
+    var currentCategoryTasks = tasksList
+        .where((element) => element.category == currentCategory)
+        .toList();
+
+    var currentCategoryFinishedTasks = finishedList
+        .where((element) => element.category == currentCategory)
+        .toList();
+
     return Scaffold(
       backgroundColor: backgroundColor,
       drawer: AppDrawer(),
       appBar: CustomAppBar(
-        title: 'Inbox',
+        title: currentCategory.name,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -40,11 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 TasksSection(
-                  tasksList: tasksList[Categories.inbox]!,
+                  tasksList: currentCategoryTasks,
                   onCheck: checkTask,
                 ),
                 sizedBox16Height,
-                CompletedTasksSection(finishedList: finishedList),
+                CompletedTasksSection(
+                  finishedList: currentCategoryFinishedTasks,
+                ),
               ],
             ),
           ),
@@ -155,6 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                     listen: false,
                                   ).setTaskCategory(item);
+                                  print("*******************************" +
+                                      item.name);
                                 },
                                 itemBuilder: (BuildContext context) => [
                                   ...Categories.categoriesList
@@ -181,16 +201,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? null
                                   : () {
                                       setState(() {
-                                        tasksList[Provider.of<
-                                                        TaskCategoryProvider>(
-                                                    context,
-                                                    listen: false)
-                                                .taskCategory]!
-                                            .add(
+                                        tasksList.add(
                                           Task(
                                             title: newTaskController.text,
                                             date: taskDate,
                                             isFinished: false,
+                                            category: Provider.of<
+                                                TaskCategoryProvider>(
+                                              context,
+                                              listen: false,
+                                            ).taskCategory,
                                             taskPriority: Provider.of<
                                                 TaskPriorityProvider>(
                                               context,
@@ -198,14 +218,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ).taskPriority,
                                           ),
                                         );
-                                        // print("*************************** "+Provider.of<TaskPriorityProvider>(
-                                        //   context,
-                                        //   listen: false,
-                                        // ).taskPriority.toString());
+
+                                        print("-----------------------------" +
+                                            tasksList.toString());
                                       });
                                       Navigator.of(context).pop();
                                       newTaskController.clear();
-                                      print(taskDate);
                                     },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
@@ -268,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       finishedList.add(task);
-      taskList.remove(task);
+      tasksList.remove(task);
     });
   }
 

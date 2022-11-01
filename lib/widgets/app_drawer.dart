@@ -1,5 +1,9 @@
+import 'package:Task_Planner/Providers/current_category_page_provider.dart';
+import 'package:Task_Planner/models/category.dart';
+import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:Task_Planner/constants.dart' as constants;
+import 'package:Task_Planner/constants.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -41,11 +45,32 @@ class AppDrawer extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: constants.Categories.categoriesList.length,
+              itemCount: Categories.categoriesList.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Icon(constants.Categories.categoriesList[index].icon),
-                  title: Text(constants.Categories.categoriesList[index].name),
+                Category category = Categories.categoriesList[index];
+                return Ink(
+                  child: ListTile(
+                    onTap: () {
+                      Provider.of<CurrentCategoryPageProvider>(
+                        context,
+                        listen: false,
+                      ).setCurrentCategory(category);
+
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => HomeScreen(title: category.name),
+                        ),
+                      );
+                      // print(
+                      //   Provider.of<CurrentCategoryPageProvider>(
+                      //     context,
+                      //     listen: false,
+                      //   ).currentCategory.name,
+                      // );
+                    },
+                    leading: Icon(Categories.categoriesList[index].icon),
+                    title: Text(Categories.categoriesList[index].name),
+                  ),
                 );
               },
             ),
