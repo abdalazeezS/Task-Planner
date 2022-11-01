@@ -12,6 +12,10 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var currentCategory = Provider.of<CurrentCategoryPageProvider>(
+      context,
+      listen: false,
+    ).currentCategory;
     return Drawer(
       child: Column(
         children: [
@@ -48,28 +52,44 @@ class AppDrawer extends StatelessWidget {
               itemCount: Categories.categoriesList.length,
               itemBuilder: (context, index) {
                 Category category = Categories.categoriesList[index];
-                return Ink(
-                  child: ListTile(
-                    onTap: () {
-                      Provider.of<CurrentCategoryPageProvider>(
-                        context,
-                        listen: false,
-                      ).setCurrentCategory(category);
+                return InkWell(
+                  onTap: () {},
+                  child: Ink(
+                    child: ListTile(
+                      tileColor: category == currentCategory
+                          ? ThemeData().primaryColor
+                          : null,
+                      onTap: () {
+                        Provider.of<CurrentCategoryPageProvider>(
+                          context,
+                          listen: false,
+                        ).setCurrentCategory(category);
 
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => HomeScreen(title: category.name),
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => HomeScreen(title: category.name),
+                          ),
+                        );
+                        // print(
+                        //   Provider.of<CurrentCategoryPageProvider>(
+                        //     context,
+                        //     listen: false,
+                        //   ).currentCategory.name,
+                        // );
+                      },
+                      leading: Icon(
+                        Categories.categoriesList[index].icon,
+                        color:
+                            category == currentCategory ? Colors.white : null,
+                      ),
+                      title: Text(
+                        Categories.categoriesList[index].name,
+                        style: TextStyle(
+                          color:
+                              category == currentCategory ? Colors.white : null,
                         ),
-                      );
-                      // print(
-                      //   Provider.of<CurrentCategoryPageProvider>(
-                      //     context,
-                      //     listen: false,
-                      //   ).currentCategory.name,
-                      // );
-                    },
-                    leading: Icon(Categories.categoriesList[index].icon),
-                    title: Text(Categories.categoriesList[index].name),
+                      ),
+                    ),
                   ),
                 );
               },
