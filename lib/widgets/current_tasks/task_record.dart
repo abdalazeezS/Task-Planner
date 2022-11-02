@@ -1,4 +1,4 @@
-import 'package:Task_Planner/screens/task_details.dart';
+import 'package:Task_Planner/screens/task_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
