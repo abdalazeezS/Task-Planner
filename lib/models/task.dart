@@ -8,12 +8,14 @@ class Task {
   bool isFinished;
   TaskPriority taskPriority;
   Category category;
+  String? description = '';
 
   Task({
     required this.title,
     required this.date,
     required this.isFinished,
     required this.taskPriority,
-    required this.category
+    required this.category,
+    this.description,
   });
 }

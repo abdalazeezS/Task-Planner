@@ -5,13 +5,16 @@ import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Providers/task_description_provider.dart';
+
 void main() => runApp(
       MultiProvider(
         child: MyApp(),
         providers: [
           ChangeNotifierProvider(create: (_) => TaskPriorityProvider()),
           ChangeNotifierProvider(create: (_) => TaskCategoryProvider()),
-          ChangeNotifierProvider(create: (_)=> CurrentCategoryPageProvider()),
+          ChangeNotifierProvider(create: (_) => CurrentCategoryPageProvider()),
+          ChangeNotifierProvider(create: (_) => TaskDescriptionProvider()),
         ],
       ),
     );

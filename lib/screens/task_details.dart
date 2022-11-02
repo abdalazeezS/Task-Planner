@@ -1,5 +1,7 @@
+import 'package:Task_Planner/Providers/task_description_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../models/task.dart';
@@ -20,6 +22,16 @@ class TaskDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _taskDescriptionController = TextEditingController(
+      text: Provider.of<TaskDescriptionProvider>(
+        context,
+        listen: false,
+      ).getTaskDescription(task),
+    );
+
+    _taskDescriptionController.selection =
+        TextSelection.collapsed(offset: _taskDescriptionController.text.length);
+
     var remainingDays = calculateDifference(task.date);
     var remainingDaysText = '';
 
@@ -82,7 +94,15 @@ class TaskDetails extends StatelessWidget {
                 SizedBox(height: 8),
                 Container(
                   child: TextField(
+                    controller: _taskDescriptionController,
                     maxLines: 3,
+                    onChanged: (value) {
+                      task.description = _taskDescriptionController.text;
+                      Provider.of<TaskDescriptionProvider>(
+                        context,
+                        listen: false,
+                      ).setTaskDescription(task, task.description);
+                    },
                     decoration: InputDecoration(
                       hintText: 'Description',
                       border: InputBorder.none,
