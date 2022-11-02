@@ -1,8 +1,8 @@
-import 'package:Task_Planner/Providers/task_description_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../Providers/task_provider.dart';
 import '../constants.dart';
 import '../models/task.dart';
 
@@ -23,7 +23,7 @@ class TaskDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController _taskDescriptionController = TextEditingController(
-      text: Provider.of<TaskDescriptionProvider>(
+      text: Provider.of<TaskProvider>(
         context,
         listen: false,
       ).getTaskDescription(task),
@@ -98,7 +98,7 @@ class TaskDetails extends StatelessWidget {
                     maxLines: 3,
                     onChanged: (value) {
                       task.description = _taskDescriptionController.text;
-                      Provider.of<TaskDescriptionProvider>(
+                      Provider.of<TaskProvider>(
                         context,
                         listen: false,
                       ).setTaskDescription(task, task.description);

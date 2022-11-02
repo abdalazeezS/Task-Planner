@@ -1,9 +1,10 @@
-import 'package:Task_Planner/Providers/current_category_page_provider.dart';
 import 'package:Task_Planner/models/category.dart';
 import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Task_Planner/constants.dart';
 import 'package:provider/provider.dart';
+
+import '../Providers/task_provider.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -12,7 +13,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentCategory = Provider.of<CurrentCategoryPageProvider>(
+    var currentCategory = Provider.of<TaskProvider>(
       context,
       listen: false,
     ).currentCategory;
@@ -60,7 +61,7 @@ class AppDrawer extends StatelessWidget {
                           ? ThemeData().primaryColor
                           : null,
                       onTap: () {
-                        Provider.of<CurrentCategoryPageProvider>(
+                        Provider.of<TaskProvider>(
                           context,
                           listen: false,
                         ).setCurrentCategory(category);
@@ -70,12 +71,6 @@ class AppDrawer extends StatelessWidget {
                             builder: (_) => HomeScreen(title: category.name),
                           ),
                         );
-                        // print(
-                        //   Provider.of<CurrentCategoryPageProvider>(
-                        //     context,
-                        //     listen: false,
-                        //   ).currentCategory.name,
-                        // );
                       },
                       leading: Icon(
                         Categories.categoriesList[index].icon,

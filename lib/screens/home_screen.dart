@@ -1,6 +1,4 @@
-import 'package:Task_Planner/Providers/current_category_page_provider.dart';
-import 'package:Task_Planner/Providers/task_category_provider.dart';
-import 'package:Task_Planner/Providers/task_priority_provider.dart';
+import 'package:Task_Planner/Providers/task_provider.dart';
 import 'package:Task_Planner/constants.dart';
 import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var currentCategory = Provider.of<CurrentCategoryPageProvider>(
+    var currentCategory = Provider.of<TaskProvider>(
       context,
       listen: false,
     ).currentCategory;
@@ -76,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             context: context,
             builder: (_) {
-              var taskPriorityColor = Provider.of<TaskPriorityProvider>(
+              var taskPriorityColor = Provider.of<TaskProvider>(
                 context,
                 listen: false,
               ).taskPriorityColor;
 
-              var taskPriorityName = Provider.of<TaskPriorityProvider>(
+              var taskPriorityName = Provider.of<TaskProvider>(
                 context,
                 listen: false,
               ).taskPriorityText;
@@ -139,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 onSelected: (item) {
-                                  Provider.of<TaskPriorityProvider>(
+                                  Provider.of<TaskProvider>(
                                     context,
                                     listen: false,
                                   ).setTaskPriority(item);
@@ -156,20 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: TextButton.icon(
                                   onPressed: null,
                                   icon: Icon(
-                                    Provider.of<TaskCategoryProvider>(
+                                    Provider.of<TaskProvider>(
                                       context,
                                       listen: false,
                                     ).taskCategory.icon,
                                   ),
                                   label: Text(
-                                    Provider.of<TaskCategoryProvider>(
+                                    Provider.of<TaskProvider>(
                                       context,
                                       listen: false,
                                     ).taskCategory.name,
                                   ),
                                 ),
                                 onSelected: (item) {
-                                  Provider.of<TaskCategoryProvider>(
+                                  Provider.of<TaskProvider>(
                                     context,
                                     listen: false,
                                   ).setTaskCategory(item);
@@ -206,13 +204,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             title: newTaskController.text,
                                             date: taskDate,
                                             isFinished: false,
-                                            category: Provider.of<
-                                                TaskCategoryProvider>(
+                                            category: Provider.of<TaskProvider>(
                                               context,
                                               listen: false,
                                             ).taskCategory,
-                                            taskPriority: Provider.of<
-                                                TaskPriorityProvider>(
+                                            taskPriority:
+                                                Provider.of<TaskProvider>(
                                               context,
                                               listen: false,
                                             ).taskPriority,
@@ -291,11 +288,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void resetBottomSheet(BuildContext ctx) {
-    Provider.of<TaskPriorityProvider>(
+    Provider.of<TaskProvider>(
       ctx,
       listen: false,
     ).resetPriority();
-    Provider.of<TaskCategoryProvider>(
+    Provider.of<TaskProvider>(
       ctx,
       listen: false,
     ).resetTaskCategory();
