@@ -1,4 +1,4 @@
-import 'package:Task_Planner/models/category.dart';
+import 'package:Task_Planner/models/task_category.dart';
 
 import '../constants.dart';
 
@@ -6,8 +6,8 @@ class Task {
   String title;
   DateTime date;
   bool isFinished;
-  TaskPriority taskPriority;
-  Category category;
+  TaskPriorityType taskPriority;
+  TaskCategory category;
   String? description = '';
 
   Task({

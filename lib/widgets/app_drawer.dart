@@ -1,4 +1,4 @@
-import 'package:Task_Planner/models/category.dart';
+import 'package:Task_Planner/models/task_category.dart';
 import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Task_Planner/constants.dart';
@@ -52,7 +52,7 @@ class AppDrawer extends StatelessWidget {
             child: ListView.builder(
               itemCount: Categories.categoriesList.length,
               itemBuilder: (context, index) {
-                Category category = Categories.categoriesList[index];
+                TaskCategory category = Categories.categoriesList[index];
                 return InkWell(
                   onTap: () {},
                   child: Ink(

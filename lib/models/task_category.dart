@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Category {
+class TaskCategory {
   String name;
   IconData icon;
 
-  Category({
+  TaskCategory({
     required this.name,
     required this.icon,
   });

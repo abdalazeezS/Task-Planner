@@ -1,6 +1,7 @@
+import 'package:Task_Planner/models/task_priority.dart';
 import 'package:flutter/material.dart';
 
-import 'models/category.dart';
+import 'models/task_category.dart';
 import 'models/task.dart';
 
 const Color backgroundColor = Color(0xFFF2F5FE);
@@ -9,19 +10,21 @@ const EdgeInsets space8 = EdgeInsets.all(8.0);
 const SizedBox sizedBox16Height = SizedBox(height: 16);
 
 class Categories {
-  static Category today = Category(name: 'Today', icon: Icons.today);
-  static Category inbox = Category(name: 'Inbox', icon: Icons.inbox);
-  static Category welcome =
-      Category(name: 'Welcome', icon: Icons.waving_hand_sharp);
-  static Category work = Category(name: 'Work', icon: Icons.today);
-  static Category personal = Category(name: 'Personal', icon: Icons.work);
-  static Category shopping =
-      Category(name: 'Shopping', icon: Icons.shopping_cart_rounded);
-  static Category wishList =
-      Category(name: 'Wish List', icon: Icons.hourglass_top);
-  static Category birthday = Category(name: 'Birthday', icon: Icons.cake);
+  static TaskCategory today = TaskCategory(name: 'Today', icon: Icons.today);
+  static TaskCategory inbox = TaskCategory(name: 'Inbox', icon: Icons.inbox);
+  static TaskCategory welcome =
+      TaskCategory(name: 'Welcome', icon: Icons.waving_hand_sharp);
+  static TaskCategory work = TaskCategory(name: 'Work', icon: Icons.today);
+  static TaskCategory personal =
+      TaskCategory(name: 'Personal', icon: Icons.work);
+  static TaskCategory shopping =
+      TaskCategory(name: 'Shopping', icon: Icons.shopping_cart_rounded);
+  static TaskCategory wishList =
+      TaskCategory(name: 'Wish List', icon: Icons.hourglass_top);
+  static TaskCategory birthday =
+      TaskCategory(name: 'Birthday', icon: Icons.cake);
 
-  static List<Category> categoriesList = [
+  static List<TaskCategory> categoriesList = [
     inbox,
     today,
     welcome,
@@ -38,21 +41,21 @@ var finishedList = [
     title: 'Study for SW Exam',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.none,
+    taskPriority: TaskPriorityType.none,
     category: Categories.inbox,
   ),
   Task(
     title: 'Clean up my room',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.none,
+    taskPriority: TaskPriorityType.none,
     category: Categories.personal,
   ),
   Task(
     title: 'Go to gym',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.none,
+    taskPriority: TaskPriorityType.none,
     category: Categories.inbox,
   ),
 ];
@@ -62,40 +65,40 @@ var tasksList = [
     title: 'Wash the car',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.high,
+    taskPriority: TaskPriorityType.high,
     category: Categories.inbox,
   ),
   Task(
     title: 'buy new clothes',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.low,
+    taskPriority: TaskPriorityType.low,
     category: Categories.personal,
   ),
   Task(
     title: 'Start coding flutter project',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.medium,
+    taskPriority: TaskPriorityType.medium,
     category: Categories.work,
   ),
   Task(
     title: 'Prepare RTIT project',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.none,
+    taskPriority: TaskPriorityType.none,
     category: Categories.work,
   ),
   Task(
     title: 'buy a new perfume',
     date: DateTime.now(),
     isFinished: false,
-    taskPriority: TaskPriority.none,
+    taskPriority: TaskPriorityType.none,
     category: Categories.shopping,
   )
 ];
 
-enum TaskPriority { high, medium, low, none }
+enum TaskPriorityType { high, medium, low, none }
 
 Map<String, Color> priorityColorMap = {
   'high': Colors.red,
@@ -104,47 +107,40 @@ Map<String, Color> priorityColorMap = {
   'none': Colors.black38
 };
 
-List<PopupMenuEntry<TaskPriority>> taskPriorityOptionList() {
-  return [
-    PopupMenuItem(
-      value: TaskPriority.high,
+List<TaskPriority> tasksPriorities = [
+  TaskPriority(
+    taskPriority: TaskPriorityType.high,
+    title: 'High Priority',
+    color: Colors.red,
+  ),
+  TaskPriority(
+    taskPriority: TaskPriorityType.medium,
+    title: 'Medium Priority',
+    color: Colors.yellow,
+  ),
+  TaskPriority(
+    taskPriority: TaskPriorityType.low,
+    title: 'Low Priority',
+    color: Colors.blue,
+  ),
+  TaskPriority(
+    taskPriority: TaskPriorityType.none,
+    title: 'No Priority',
+    color: Colors.grey,
+  ),
+];
+
+List<PopupMenuEntry<TaskPriorityType>> taskPriorityOptionList() {
+  return tasksPriorities.map((priority) {
+    return PopupMenuItem(
+      value: priority.taskPriority,
       child: ListTile(
-        title: Text('High Priority'),
+        title: Text(priority.title),
         leading: Icon(
           Icons.flag,
-          color: Colors.red,
+          color: priority.color,
         ),
       ),
-    ),
-    PopupMenuItem(
-      value: TaskPriority.medium,
-      child: ListTile(
-        title: Text('Medium Priority'),
-        leading: Icon(
-          Icons.flag,
-          color: Colors.yellow,
-        ),
-      ),
-    ),
-    PopupMenuItem(
-      value: TaskPriority.low,
-      child: ListTile(
-        title: Text('Low Priority'),
-        leading: Icon(
-          Icons.flag,
-          color: Colors.blue,
-        ),
-      ),
-    ),
-    PopupMenuItem(
-      value: TaskPriority.none,
-      child: ListTile(
-        title: Text('No Priority'),
-        leading: Icon(
-          Icons.flag,
-          color: Colors.grey,
-        ),
-      ),
-    )
-  ];
+    );
+  }).toList();
 }

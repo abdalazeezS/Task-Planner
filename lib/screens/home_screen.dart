@@ -4,7 +4,7 @@ import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/category.dart';
+import '../models/task_category.dart';
 import '../models/task.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/completed_tasks/completed_tasks_section.dart';
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 },
                               ),
-                              PopupMenuButton<TaskPriority>(
+                              PopupMenuButton<TaskPriorityType>(
                                 child: TextButton.icon(
                                   onPressed: null,
                                   icon: Icon(
@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 icon: const Icon(Icons.local_offer),
                                 onPressed: () {},
                               ),
-                              PopupMenuButton<Category>(
+                              PopupMenuButton<TaskCategory>(
                                 child: TextButton.icon(
                                   onPressed: null,
                                   icon: Icon(
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemBuilder: (BuildContext context) => [
                                   ...Categories.categoriesList
                                       .map(
-                                        (e) => PopupMenuItem<Category>(
+                                        (e) => PopupMenuItem<TaskCategory>(
                                           child: ListTile(
                                             leading: Icon(e.icon),
                                             title: Text(e.name),

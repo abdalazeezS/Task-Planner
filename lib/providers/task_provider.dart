@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../models/category.dart';
+import '../models/task_category.dart';
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
   String taskPriorityText = '';
   Color taskPriorityColor = Colors.black38;
-  TaskPriority taskPriority = TaskPriority.none;
+  TaskPriorityType taskPriority = TaskPriorityType.none;
 
-  setTaskPriority(TaskPriority priority) {
+  setTaskPriority(TaskPriorityType priority) {
     if (priority.name == 'none') {
       taskPriorityText = '';
       taskPriorityColor = Colors.black38;
@@ -36,21 +36,21 @@ class TaskProvider with ChangeNotifier {
     return task.description;
   }
 
-  Category taskCategory = Categories.inbox;
+  TaskCategory taskCategory = Categories.inbox;
 
   resetTaskCategory() {
     taskCategory = Categories.inbox;
     notifyListeners();
   }
 
-  setTaskCategory(Category category) {
+  setTaskCategory(TaskCategory category) {
     taskCategory = category;
     notifyListeners();
   }
 
-  Category currentCategory = Categories.inbox;
+  TaskCategory currentCategory = Categories.inbox;
 
-  setCurrentCategory(Category category) {
+  setCurrentCategory(TaskCategory category) {
     currentCategory = category;
     notifyListeners();
   }
