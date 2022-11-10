@@ -1,3 +1,3 @@
 # task_planner
 
-ToDo list app with
+ToDo list app with Flutter
