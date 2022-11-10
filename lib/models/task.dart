@@ -1,3 +1,4 @@
+import 'package:Task_Planner/models/sub_task.dart';
 import 'package:Task_Planner/models/task_category.dart';
 
 import '../constants.dart';
@@ -9,6 +10,7 @@ class Task {
   TaskPriorityType taskPriority;
   TaskCategory category;
   String? description = '';
+  List<SubTask>? subTasks;
 
   Task({
     required this.title,
@@ -17,5 +19,6 @@ class Task {
     required this.taskPriority,
     required this.category,
     this.description,
+    this.subTasks,
   });
 }

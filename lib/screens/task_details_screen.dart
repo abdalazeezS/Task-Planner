@@ -1,3 +1,4 @@
+import 'package:Task_Planner/widgets/task_details/subtask_record.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +23,13 @@ class TaskDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var taskProvider = Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    );
+
     TextEditingController _taskDescriptionController = TextEditingController(
-      text: Provider.of<TaskProvider>(
-        context,
-        listen: false,
-      ).getTaskDescription(task),
+      text: taskProvider.getTaskDescription(task),
     );
 
     _taskDescriptionController.selection =
@@ -98,10 +101,7 @@ class TaskDetails extends StatelessWidget {
                     maxLines: 3,
                     onChanged: (value) {
                       task.description = _taskDescriptionController.text;
-                      Provider.of<TaskProvider>(
-                        context,
-                        listen: false,
-                      ).setTaskDescription(task, task.description);
+                      taskProvider.setTaskDescription(task, task.description);
                     },
                     decoration: InputDecoration(
                       hintText: 'Description',
@@ -112,6 +112,21 @@ class TaskDetails extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ...?task.subTasks?.map((subTask) {
+                      return SubTaskRecord(
+                        subTaskTitle: subTask.title,
+                      );
+                    }).toList(),
+                    TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.add),
+                      label: Text('Add SubTask'),
+                    ),
+                  ],
                 ),
               ],
             ),

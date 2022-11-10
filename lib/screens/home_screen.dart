@@ -28,10 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var currentCategory = Provider.of<TaskProvider>(
+    var taskProvider = Provider.of<TaskProvider>(
       context,
       listen: false,
-    ).currentCategory;
+    );
+
+    var currentCategory = taskProvider.currentCategory;
 
     var currentCategoryTasks = tasksList
         .where((element) => element.category == currentCategory)
@@ -44,9 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       drawer: AppDrawer(),
-      appBar: CustomAppBar(
-        title: currentCategory.name,
-      ),
+      appBar: CustomAppBar(title: currentCategory.name),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -74,16 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             context: context,
             builder: (_) {
-              var taskPriorityColor = Provider.of<TaskProvider>(
-                context,
-                listen: false,
-              ).taskPriorityColor;
-
-              var taskPriorityName = Provider.of<TaskProvider>(
-                context,
-                listen: false,
-              ).taskPriorityText;
-
               return Padding(
                 padding: space8,
                 child: Column(
@@ -127,20 +117,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onPressed: null,
                                   icon: Icon(
                                     Icons.flag,
-                                    color: taskPriorityColor,
+                                    color: taskProvider.taskPriorityColor,
                                   ),
                                   label: Text(
-                                    taskPriorityName,
+                                    taskProvider.taskPriorityName,
                                     style: TextStyle(
-                                      color: taskPriorityColor,
+                                      color: taskProvider.taskPriorityColor,
                                     ),
                                   ),
                                 ),
                                 onSelected: (item) {
-                                  Provider.of<TaskProvider>(
-                                    context,
-                                    listen: false,
-                                  ).setTaskPriority(item);
+                                  taskProvider.setTaskPriority(item);
                                 },
                                 itemBuilder: (BuildContext context) =>
                                     taskPriorityOptionList(),
@@ -154,35 +141,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: TextButton.icon(
                                   onPressed: null,
                                   icon: Icon(
-                                    Provider.of<TaskProvider>(
-                                      context,
-                                      listen: false,
-                                    ).taskCategory.icon,
+                                    taskProvider.taskCategory.icon,
                                   ),
                                   label: Text(
-                                    Provider.of<TaskProvider>(
-                                      context,
-                                      listen: false,
-                                    ).taskCategory.name,
+                                    taskProvider.taskCategory.name,
                                   ),
                                 ),
                                 onSelected: (item) {
-                                  Provider.of<TaskProvider>(
-                                    context,
-                                    listen: false,
-                                  ).setTaskCategory(item);
-                                  print("*******************************" +
-                                      item.name);
+                                  taskProvider.setTaskCategory(item);
                                 },
                                 itemBuilder: (BuildContext context) => [
                                   ...Categories.categoriesList
                                       .map(
-                                        (e) => PopupMenuItem<TaskCategory>(
+                                        (category) =>
+                                            PopupMenuItem<TaskCategory>(
                                           child: ListTile(
-                                            leading: Icon(e.icon),
-                                            title: Text(e.name),
+                                            leading: Icon(category.icon),
+                                            title: Text(category.name),
                                           ),
-                                          value: e,
+                                          value: category,
                                         ),
                                       )
                                       .toList(),
@@ -191,48 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        ValueListenableBuilder(
-                          valueListenable: newTaskController,
-                          builder: ((context, value, child) {
-                            return ElevatedButton(
-                              onPressed: value.text.isEmpty
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        tasksList.add(
-                                          Task(
-                                            title: newTaskController.text,
-                                            date: taskDate,
-                                            isFinished: false,
-                                            category: Provider.of<TaskProvider>(
-                                              context,
-                                              listen: false,
-                                            ).taskCategory,
-                                            taskPriority:
-                                                Provider.of<TaskProvider>(
-                                              context,
-                                              listen: false,
-                                            ).taskPriority,
-                                          ),
-                                        );
-
-                                        print("-----------------------------" +
-                                            tasksList.toString());
-                                      });
-                                      Navigator.of(context).pop();
-                                      newTaskController.clear();
-                                    },
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                              ),
-                              child: const Icon(Icons.send),
-                            );
-                          }),
-                        )
+                        buildAddTaskButton(taskProvider)
                       ],
                     ),
                   ],
@@ -251,8 +187,45 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  ValueListenableBuilder<TextEditingValue> buildAddTaskButton(
+      TaskProvider taskProvider) {
+    return ValueListenableBuilder(
+      valueListenable: newTaskController,
+      builder: ((context, value, child) {
+        return ElevatedButton(
+          onPressed: value.text.isEmpty
+              ? null
+              : () {
+                  setState(() {
+                    tasksList.add(
+                      Task(
+                        title: newTaskController.text,
+                        date: taskDate,
+                        isFinished: false,
+                        category: taskProvider.taskCategory,
+                        taskPriority: taskProvider.taskPriority,
+                      ),
+                    );
+                  });
+                  Navigator.of(context).pop();
+                  newTaskController.clear();
+                },
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+          child: const Icon(Icons.send),
+        );
+      }),
+    );
+  }
+
   BottomNavigationBar buildBottomNavigationBar() {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       elevation: 1,
       currentIndex: bottomNavigationBarSelectedIndex,
       onTap: (v) {
