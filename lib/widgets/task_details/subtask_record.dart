@@ -14,26 +14,18 @@ class SubTaskRecord extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 4),
       child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(
-            width: 1,
-            color: Colors.black12,
-          ),
-        ),
         contentPadding: EdgeInsets.zero,
         leading: Checkbox(value: true, onChanged: (v) {}),
         trailing: IconButton(
           onPressed: () {},
-          icon: Icon(
-            Icons.close,
-            color: Colors.red,
-          ),
+          icon: Icon(Icons.close, color: Colors.red),
         ),
         title: TextField(
           controller: _subTaskController,
           decoration: InputDecoration(
-            border: InputBorder.none,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black12),
+            ),
             hintText: 'new subtask',
           ),
         ),
