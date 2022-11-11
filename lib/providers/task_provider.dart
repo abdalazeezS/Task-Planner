@@ -1,29 +1,80 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../models/sub_task.dart';
 import '../models/task_category.dart';
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
-  String taskPriorityText = '';
+  List<Task> tasksList = [
+    Task(
+        title: 'Wash the car',
+        date: DateTime.now(),
+        isFinished: false,
+        taskPriority: TaskPriorityType.high,
+        category: Categories.inbox,
+        subTasks: [
+          SubTask(title: 'title', isFinished: false),
+          SubTask(title: 'title2', isFinished: false),
+          SubTask(title: 'title', isFinished: false),
+          SubTask(title: 'title2', isFinished: false),
+        ]),
+    Task(
+        title: 'buy new clothes',
+        date: DateTime.now(),
+        isFinished: false,
+        taskPriority: TaskPriorityType.low,
+        category: Categories.personal,
+        subTasks: [
+          SubTask(title: 'clothes sub 1', isFinished: false),
+        ]),
+    Task(
+      title: 'Start coding flutter project',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriorityType.medium,
+      category: Categories.work,
+    ),
+    Task(
+      title: 'Prepare RTIT project',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriorityType.none,
+      category: Categories.work,
+    ),
+    Task(
+      title: 'buy a new perfume',
+      date: DateTime.now(),
+      isFinished: false,
+      taskPriority: TaskPriorityType.none,
+      category: Categories.shopping,
+    )
+  ];
+
+  DateTime taskDate = DateTime.now();
+  String taskPriorityName = '';
   Color taskPriorityColor = Colors.black38;
   TaskPriorityType taskPriority = TaskPriorityType.none;
 
-  setTaskPriority(TaskPriorityType priority) {
-    if (priority.name == 'none') {
-      taskPriorityText = '';
-      taskPriorityColor = Colors.black38;
-    } else {
-      taskPriorityText = priority.name + ' ';
-      taskPriorityColor = priorityColorMap[taskPriorityText.trim()]!;
-    }
-    taskPriority = priority;
+  addSubTask(Task task, SubTask subTask) {
+    task.subTasks!.add(subTask);
     notifyListeners();
   }
 
-  resetPriority() {
-    taskPriorityText = '';
-    taskPriorityColor = Colors.black38;
+  addTask(Task task) {
+    tasksList.add(task);
+    notifyListeners();
+  }
+
+  setTaskPriority(TaskPriorityType priority) {
+    if (priority.name == 'none') {
+      taskPriorityName = '';
+      taskPriorityColor = Colors.black38;
+    } else {
+      taskPriorityName = priority.name + ' ';
+      taskPriorityColor = priorityColorMap[taskPriorityName.trim()]!;
+    }
+    taskPriority = priority;
     notifyListeners();
   }
 
@@ -38,8 +89,10 @@ class TaskProvider with ChangeNotifier {
 
   TaskCategory taskCategory = Categories.inbox;
 
-  resetTaskCategory() {
+  resetTaskInfo() {
     taskCategory = Categories.inbox;
+    taskPriorityName = '';
+    taskPriorityColor = Colors.black38;
     notifyListeners();
   }
 
