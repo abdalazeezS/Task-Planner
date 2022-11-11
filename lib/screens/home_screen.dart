@@ -22,20 +22,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int bottomNavigationBarSelectedIndex = 0;
 
-  var taskDate = DateTime.now();
-
   TextEditingController newTaskController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
+    print('home build method');
     var taskProvider = Provider.of<TaskProvider>(
       context,
-      listen: false,
+      listen: true,
     );
 
     var currentCategory = taskProvider.currentCategory;
 
-    var currentCategoryTasks = tasksList
+    var currentCategoryTasks = taskProvider.tasksList
         .where((element) => element.category == currentCategory)
         .toList();
 
@@ -106,10 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       const Duration(days: 365),
                                     ),
                                   );
-                                  setState(() {
-                                    if (datePicked != null)
-                                      taskDate = datePicked;
-                                  });
+                                  if (datePicked != null)
+                                    taskProvider.taskDate = datePicked;
                                 },
                               ),
                               PopupMenuButton<TaskPriorityType>(
@@ -196,17 +193,15 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: value.text.isEmpty
               ? null
               : () {
-                  setState(() {
-                    tasksList.add(
-                      Task(
-                        title: newTaskController.text,
-                        date: taskDate,
-                        isFinished: false,
-                        category: taskProvider.taskCategory,
-                        taskPriority: taskProvider.taskPriority,
-                      ),
-                    );
-                  });
+                  taskProvider.addTask(
+                    Task(
+                      title: newTaskController.text,
+                      date: taskProvider.taskDate,
+                      isFinished: false,
+                      category: taskProvider.taskCategory,
+                      taskPriority: taskProvider.taskPriority,
+                    ),
+                  );
                   Navigator.of(context).pop();
                   newTaskController.clear();
                 },
@@ -256,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       finishedList.add(task);
-      tasksList.remove(task);
+      Provider.of<TaskProvider>(context, listen: false).tasksList.remove(task);
     });
   }
 
@@ -264,10 +259,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<TaskProvider>(
       ctx,
       listen: false,
-    ).resetPriority();
-    Provider.of<TaskProvider>(
-      ctx,
-      listen: false,
-    ).resetTaskCategory();
+    ).resetTaskInfo();
   }
 }
