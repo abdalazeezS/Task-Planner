@@ -57,9 +57,9 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {},
                   child: Ink(
                     child: ListTile(
-                      // tileColor: category == currentCategory
-                      //     ? ThemeData().primaryColor
-                      //     : null,
+                      tileColor: category == currentCategory
+                          ? Colors.blue.withOpacity(0.12)
+                          : null,
                       onTap: () {
                         Provider.of<TaskProvider>(
                           context,
@@ -74,14 +74,16 @@ class AppDrawer extends StatelessWidget {
                       },
                       leading: Icon(
                         Categories.categoriesList[index].icon,
-                        color:
-                            category == currentCategory ? ThemeData().primaryColor : null,
+                        color: category == currentCategory
+                            ? ThemeData().primaryColor
+                            : null,
                       ),
                       title: Text(
                         Categories.categoriesList[index].name,
                         style: TextStyle(
-                          color:
-                              category == currentCategory ? ThemeData().primaryColor : null,
+                          color: category == currentCategory
+                              ? ThemeData().primaryColor
+                              : null,
                         ),
                       ),
                     ),
