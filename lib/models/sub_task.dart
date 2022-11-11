@@ -1,9 +1,9 @@
 class SubTask {
-  String title;
-  bool isFinished;
+  String? title = '';
+  bool? isFinished = false;
 
   SubTask({
-    required this.title,
-    required this.isFinished,
+    this.title,
+    this.isFinished,
   });
 }

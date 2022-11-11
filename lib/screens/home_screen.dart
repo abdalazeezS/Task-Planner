@@ -8,7 +8,7 @@ import '../models/task_category.dart';
 import '../models/task.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/completed_tasks/completed_tasks_section.dart';
-import '../widgets/current_tasks/tasks_section.dart';
+import '../widgets/current_tasks/current_tasks_section.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key, this.title});
@@ -200,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       isFinished: false,
                       category: taskProvider.taskCategory,
                       taskPriority: taskProvider.taskPriority,
+                      subTasks: [],
                     ),
                   );
                   Navigator.of(context).pop();

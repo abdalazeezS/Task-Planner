@@ -29,25 +29,26 @@ class TaskProvider with ChangeNotifier {
           SubTask(title: 'clothes sub 1', isFinished: false),
         ]),
     Task(
-      title: 'Start coding flutter project',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriorityType.medium,
-      category: Categories.work,
-    ),
+        title: 'Start coding flutter project',
+        date: DateTime.now(),
+        isFinished: false,
+        taskPriority: TaskPriorityType.medium,
+        category: Categories.work,
+        subTasks: []),
     Task(
-      title: 'Prepare RTIT project',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriorityType.none,
-      category: Categories.work,
-    ),
+        title: 'Prepare RTIT project',
+        date: DateTime.now(),
+        isFinished: false,
+        taskPriority: TaskPriorityType.none,
+        category: Categories.work,
+        subTasks: []),
     Task(
       title: 'buy a new perfume',
       date: DateTime.now(),
       isFinished: false,
       taskPriority: TaskPriorityType.none,
       category: Categories.shopping,
+      subTasks: [],
     )
   ];
 
@@ -58,6 +59,16 @@ class TaskProvider with ChangeNotifier {
 
   addSubTask(Task task, SubTask subTask) {
     task.subTasks!.add(subTask);
+    notifyListeners();
+  }
+
+  removeLastSubTask(Task task) {
+    task.subTasks?.removeLast();
+    notifyListeners();
+  }
+
+  void removeSubTask(Task task, SubTask subTask) {
+    task.subTasks?.remove(subTask);
     notifyListeners();
   }
 

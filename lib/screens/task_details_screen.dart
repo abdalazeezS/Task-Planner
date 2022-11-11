@@ -31,7 +31,7 @@ class TaskDetails extends StatelessWidget {
 
     var taskObject =
         taskProvider.tasksList.firstWhere((element) => element == task);
-    print(taskObject.toString());
+
     TextEditingController _taskDescriptionController = TextEditingController(
       text: taskProvider.getTaskDescription(task),
     );
@@ -124,14 +124,15 @@ class TaskDetails extends StatelessWidget {
                     children: [
                       ...?taskObject.subTasks?.map((subTask) {
                         return SubTaskRecord(
-                          subTaskTitle: subTask.title,
+                          task: task,
+                          subTask: subTask,
                         );
                       }).toList(),
                       TextButton.icon(
                         onPressed: () {
                           taskProvider.addSubTask(
                             task,
-                            SubTask(title: 'new subTask', isFinished: false),
+                            SubTask(),
                           );
                         },
                         icon: Icon(Icons.add),
