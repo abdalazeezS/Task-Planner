@@ -1,3 +1,4 @@
+import 'package:Task_Planner/models/sub_task.dart';
 import 'package:Task_Planner/widgets/task_details/subtask_record.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,9 +26,12 @@ class TaskDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     var taskProvider = Provider.of<TaskProvider>(
       context,
-      listen: false,
+      listen: true,
     );
 
+    var taskObject =
+        taskProvider.tasksList.firstWhere((element) => element == task);
+    print(taskObject.toString());
     TextEditingController _taskDescriptionController = TextEditingController(
       text: taskProvider.getTaskDescription(task),
     );
@@ -113,20 +117,28 @@ class TaskDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    ...?task.subTasks?.map((subTask) {
-                      return SubTaskRecord(
-                        subTaskTitle: subTask.title,
-                      );
-                    }).toList(),
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.add),
-                      label: Text('Add SubTask'),
-                    ),
-                  ],
+                Container(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ...?taskObject.subTasks?.map((subTask) {
+                        return SubTaskRecord(
+                          subTaskTitle: subTask.title,
+                        );
+                      }).toList(),
+                      TextButton.icon(
+                        onPressed: () {
+                          taskProvider.addSubTask(
+                            task,
+                            SubTask(title: 'new subTask', isFinished: false),
+                          );
+                        },
+                        icon: Icon(Icons.add),
+                        label: Text('Add SubTask'),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
