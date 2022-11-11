@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Task_Planner/widgets/current_tasks/task_record.dart';
+import 'package:Task_Planner/widgets/current_tasks/current_task_record.dart';
 
 import '../../models/task.dart';
 
