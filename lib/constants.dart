@@ -1,4 +1,3 @@
-import 'package:Task_Planner/models/sub_task.dart';
 import 'package:Task_Planner/models/task_priority.dart';
 import 'package:flutter/material.dart';
 
@@ -59,49 +58,6 @@ var finishedList = [
     taskPriority: TaskPriorityType.none,
     category: Categories.inbox,
   ),
-];
-
-var tasksList = [
-  Task(
-      title: 'Wash the car',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriorityType.high,
-      category: Categories.inbox,
-      subTasks: [
-        SubTask(title: 'title', isFinished: false),
-        SubTask(title: 'title2', isFinished: false),
-        SubTask(title: 'title', isFinished: false),
-        SubTask(title: 'title2', isFinished: false),
-      ]),
-  Task(
-    title: 'buy new clothes',
-    date: DateTime.now(),
-    isFinished: false,
-    taskPriority: TaskPriorityType.low,
-    category: Categories.personal,
-  ),
-  Task(
-    title: 'Start coding flutter project',
-    date: DateTime.now(),
-    isFinished: false,
-    taskPriority: TaskPriorityType.medium,
-    category: Categories.work,
-  ),
-  Task(
-    title: 'Prepare RTIT project',
-    date: DateTime.now(),
-    isFinished: false,
-    taskPriority: TaskPriorityType.none,
-    category: Categories.work,
-  ),
-  Task(
-    title: 'buy a new perfume',
-    date: DateTime.now(),
-    isFinished: false,
-    taskPriority: TaskPriorityType.none,
-    category: Categories.shopping,
-  )
 ];
 
 enum TaskPriorityType { high, medium, low, none }
