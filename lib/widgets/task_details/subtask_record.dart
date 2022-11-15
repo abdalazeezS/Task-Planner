@@ -5,7 +5,7 @@ import '../../Providers/task_provider.dart';
 import '../../models/sub_task.dart';
 import '../../models/task.dart';
 
-class SubTaskRecord extends StatelessWidget with WidgetsBindingObserver {
+class SubTaskRecord extends StatefulWidget with WidgetsBindingObserver {
   const SubTaskRecord({
     Key? key,
     required this.subTask,
@@ -16,6 +16,11 @@ class SubTaskRecord extends StatelessWidget with WidgetsBindingObserver {
   final Task task;
 
   @override
+  State<SubTaskRecord> createState() => _SubTaskRecordState();
+}
+
+class _SubTaskRecordState extends State<SubTaskRecord> {
+  @override
   Widget build(BuildContext context) {
     var taskProvider = Provider.of<TaskProvider>(
       context,
@@ -23,7 +28,7 @@ class SubTaskRecord extends StatelessWidget with WidgetsBindingObserver {
     );
 
     TextEditingController _subTaskController = TextEditingController(
-      text: subTask.title,
+      text: widget.subTask.title,
     );
 
     return Container(
@@ -31,16 +36,27 @@ class SubTaskRecord extends StatelessWidget with WidgetsBindingObserver {
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         leading: Checkbox(
-          value: subTask.isFinished ?? false,
-          onChanged: (v) {},
+          value: widget.subTask.isFinished ?? false,
+          onChanged: (v) {
+            setState(() {
+              widget.subTask.isFinished = v;
+            });
+          },
         ),
         trailing: IconButton(
           onPressed: () {
-            taskProvider.removeSubTask(task, subTask);
+            taskProvider.removeSubTask(widget.task, widget.subTask);
           },
           icon: Icon(Icons.close, color: Colors.red),
         ),
         title: TextField(
+          style: widget.subTask.isFinished == true
+              ? TextStyle(
+                  decoration: TextDecoration.lineThrough,
+                  color: ThemeData().disabledColor,
+                )
+              : null,
+          enabled: widget.subTask.isFinished == true ? false : true,
           onSubmitted: (value) {
             _subTaskController.text = value;
             /**
@@ -49,9 +65,9 @@ class SubTaskRecord extends StatelessWidget with WidgetsBindingObserver {
              * empty one and the one that we want to write its title, so we must
              * remove the last subTask (the empty one) and then we can add the new one.
              */
-            taskProvider.removeLastSubTask(task);
+            taskProvider.removeLastSubTask(widget.task);
             taskProvider.addSubTask(
-              task,
+              widget.task,
               SubTask(
                 title: _subTaskController.text,
               ),
