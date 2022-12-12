@@ -1,56 +1,57 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../models/categories.dart';
 import '../models/sub_task.dart';
 import '../models/task_category.dart';
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
-  List<Task> tasksList = [
-    Task(
-        title: 'Wash the car',
-        date: DateTime.now(),
-        isFinished: false,
-        taskPriority: TaskPriorityType.high,
-        category: Categories.inbox,
-        subTasks: [
-          SubTask(title: 'title', isFinished: false),
-          SubTask(title: 'title2', isFinished: false),
-          SubTask(title: 'title', isFinished: false),
-          SubTask(title: 'title2', isFinished: false),
-        ]),
-    Task(
-        title: 'buy new clothes',
-        date: DateTime.now(),
-        isFinished: false,
-        taskPriority: TaskPriorityType.low,
-        category: Categories.personal,
-        subTasks: [
-          SubTask(title: 'clothes sub 1', isFinished: false),
-        ]),
-    Task(
-        title: 'Start coding flutter project',
-        date: DateTime.now(),
-        isFinished: false,
-        taskPriority: TaskPriorityType.medium,
-        category: Categories.work,
-        subTasks: []),
-    Task(
-        title: 'Prepare RTIT project',
-        date: DateTime.now(),
-        isFinished: false,
-        taskPriority: TaskPriorityType.none,
-        category: Categories.work,
-        subTasks: []),
-    Task(
-      title: 'buy a new perfume',
-      date: DateTime.now(),
-      isFinished: false,
-      taskPriority: TaskPriorityType.none,
-      category: Categories.shopping,
-      subTasks: [],
-    )
-  ];
+  // List<Task> tasksList = [
+  //   Task(
+  //       title: 'Wash the car',
+  //       date: DateTime.now(),
+  //       isFinished: false,
+  //       taskPriority: TaskPriorityType.high,
+  //       category: Categories.inbox,
+  //       subTasks: [
+  //         SubTask(title: 'title', isFinished: false),
+  //         SubTask(title: 'title2', isFinished: false),
+  //         SubTask(title: 'title', isFinished: false),
+  //         SubTask(title: 'title2', isFinished: false),
+  //       ]),
+  //   Task(
+  //       title: 'buy new clothes',
+  //       date: DateTime.now(),
+  //       isFinished: false,
+  //       taskPriority: TaskPriorityType.low,
+  //       category: Categories.personal,
+  //       subTasks: [
+  //         SubTask(title: 'clothes sub 1', isFinished: false),
+  //       ]),
+  //   Task(
+  //       title: 'Start coding flutter project',
+  //       date: DateTime.now(),
+  //       isFinished: false,
+  //       taskPriority: TaskPriorityType.medium,
+  //       category: Categories.work,
+  //       subTasks: []),
+  //   Task(
+  //       title: 'Prepare RTIT project',
+  //       date: DateTime.now(),
+  //       isFinished: false,
+  //       taskPriority: TaskPriorityType.none,
+  //       category: Categories.work,
+  //       subTasks: []),
+  //   Task(
+  //     title: 'buy a new perfume',
+  //     date: DateTime.now(),
+  //     isFinished: false,
+  //     taskPriority: TaskPriorityType.none,
+  //     category: Categories.shopping,
+  //     subTasks: [],
+  //   )
+  // ];
 
   DateTime taskDate = DateTime.now();
   String taskPriorityName = '';
@@ -69,11 +70,6 @@ class TaskProvider with ChangeNotifier {
 
   void removeSubTask(Task task, SubTask subTask) {
     task.subTasks?.remove(subTask);
-    notifyListeners();
-  }
-
-  addTask(Task task) {
-    tasksList.add(task);
     notifyListeners();
   }
 

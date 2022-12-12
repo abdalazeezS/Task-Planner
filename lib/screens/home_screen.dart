@@ -1,9 +1,11 @@
 import 'package:Task_Planner/Providers/task_provider.dart';
 import 'package:Task_Planner/constants.dart';
+import 'package:Task_Planner/providers/database_provider.dart';
 import 'package:Task_Planner/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/categories.dart';
 import '../models/task_category.dart';
 import '../models/task.dart';
 import '../widgets/app_drawer.dart';
@@ -33,14 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     var currentCategory = taskProvider.currentCategory;
-
-    var currentCategoryTasks = taskProvider.tasksList
-        .where((element) => element.category == currentCategory)
-        .toList();
-
-    var currentCategoryFinishedTasks = finishedList
-        .where((element) => element.category == currentCategory)
-        .toList();
+    //
+    // var currentCategoryTasks = taskProvider.tasksList
+    //     .where((element) => element.category == currentCategory)
+    //     .toList();
+    //
+    // var currentCategoryFinishedTasks = finishedList
+    //     .where((element) => element.category == currentCategory)
+    //     .toList();
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -52,14 +54,24 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: space16,
             child: Column(
               children: [
-                TasksSection(
-                  tasksList: currentCategoryTasks,
-                  onCheck: checkTask,
+                FutureBuilder(
+                  future: DatabaseProvider.db.getTasks(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Task> tasks = snapshot.data as List<Task>;
+                      return TasksSection(
+                        tasksList: tasks,
+                        onCheck: checkTask,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('ERROR ${snapshot.error}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
                 ),
                 sizedBox16Height,
-                CompletedTasksSection(
-                  finishedList: currentCategoryFinishedTasks,
-                ),
+                CompletedTasksSection(),
               ],
             ),
           ),
@@ -137,29 +149,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               PopupMenuButton<TaskCategory>(
                                 child: TextButton.icon(
                                   onPressed: null,
-                                  icon: Icon(
-                                    taskProvider.taskCategory.icon,
-                                  ),
-                                  label: Text(
-                                    taskProvider.taskCategory.name,
-                                  ),
+                                  icon: Icon(taskProvider.taskCategory.icon),
+                                  label: Text(taskProvider.taskCategory.name),
                                 ),
                                 onSelected: (item) {
                                   taskProvider.setTaskCategory(item);
                                 },
                                 itemBuilder: (BuildContext context) => [
-                                  ...Categories.categoriesList
-                                      .map(
-                                        (category) =>
-                                            PopupMenuItem<TaskCategory>(
-                                          child: ListTile(
-                                            leading: Icon(category.icon),
-                                            title: Text(category.name),
-                                          ),
-                                          value: category,
+                                  ...Categories.categoriesList.map(
+                                    (category) {
+                                      return PopupMenuItem<TaskCategory>(
+                                        child: ListTile(
+                                          leading: Icon(category.icon),
+                                          title: Text(category.name),
                                         ),
-                                      )
-                                      .toList(),
+                                        value: category,
+                                      );
+                                    },
+                                  ).toList(),
                                 ],
                               ),
                             ],
@@ -193,17 +200,33 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: value.text.isEmpty
               ? null
               : () {
-                  taskProvider.addTask(
-                    Task(
-                      title: newTaskController.text,
-                      date: taskProvider.taskDate,
-                      isFinished: false,
-                      category: taskProvider.taskCategory,
-                      taskPriority: taskProvider.taskPriority,
-                      subTasks: [],
-                    ),
-                  );
+                  DatabaseProvider.db
+                      .addTask(
+                        Task(
+                          title: newTaskController.text,
+                          date: taskProvider.taskDate,
+                          isFinished: false,
+                          category: taskProvider.taskCategory,
+                          taskPriority: taskProvider.taskPriority,
+                          subTasks: [],
+                        ),
+                      )
+                      .then((value) =>
+                          print('==================================$value'));
+                  // print("======================${res}");
+                  // print("======================${await database.getData()}");
+                  // taskProvider.addTask(
+                  //   Task(
+                  //     title: newTaskController.text,
+                  //     date: taskProvider.taskDate,
+                  //     isFinished: false,
+                  //     category: taskProvider.taskCategory,
+                  //     taskPriority: taskProvider.taskPriority,
+                  //     subTasks: [],
+                  //   ),
+                  // );
                   Navigator.of(context).pop();
+                  setState(() {});
                   newTaskController.clear();
                 },
           style: ButtonStyle(
@@ -249,11 +272,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void checkTask(Task task) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    setState(() {
-      finishedList.add(task);
-      Provider.of<TaskProvider>(context, listen: false).tasksList.remove(task);
-    });
+    await DatabaseProvider.db.updateTask(task);
+    setState(() {});
   }
 
   void resetBottomSheet(BuildContext ctx) {

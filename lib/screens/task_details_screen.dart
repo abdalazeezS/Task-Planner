@@ -1,4 +1,5 @@
 import 'package:Task_Planner/models/sub_task.dart';
+import 'package:Task_Planner/providers/database_provider.dart';
 import 'package:Task_Planner/widgets/task_details/subtask_record.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,13 +25,17 @@ class TaskDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     var taskProvider = Provider.of<TaskProvider>(
       context,
       listen: true,
     );
 
-    var taskObject =
-        taskProvider.tasksList.firstWhere((element) => element == task);
+    Future<Task> getTask() async {
+      List<Task> tasksObject = await DatabaseProvider.db.getTasks();
+
+      return tasksObject.firstWhere((element) => element.id == task.id);
+    }
 
     TextEditingController _taskDescriptionController = TextEditingController(
       text: taskProvider.getTaskDescription(task),
@@ -69,79 +74,99 @@ class TaskDetails extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.list_alt),
-                  title: Text(
-                    remainingDaysText + DateFormat('MMM dd').format(task.date),
-                    style: TextStyle(
-                      color: remainingDaysText == 'Missing, '
-                          ? Colors.redAccent
-                          : Colors.blueAccent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.flag,
-                    color: priorityColorMap[task.taskPriority.name],
-                  ),
-                ),
-                Text(
-                  task.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black.withOpacity(0.87),
-                    fontSize: 25,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Container(
-                  child: TextField(
-                    controller: _taskDescriptionController,
-                    maxLines: 3,
-                    onChanged: (value) {
-                      task.description = _taskDescriptionController.text;
-                      taskProvider.setTaskDescription(task, task.description);
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Description',
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 8,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+            child: FutureBuilder(
+              future: getTask(),
+              builder: (context, snapshot) {
+                Task? task = snapshot.data;
+                if (snapshot.hasData) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...?taskObject.subTasks?.map((subTask) {
-                        return SubTaskRecord(
-                          task: task,
-                          subTask: subTask,
-                        );
-                      }).toList(),
-                      TextButton.icon(
-                        onPressed: () {
-                          taskProvider.addSubTask(
-                            task,
-                            SubTask(),
-                          );
-                        },
-                        icon: Icon(Icons.add),
-                        label: Text('Add SubTask'),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(Icons.list_alt),
+                        title: Text(
+                          remainingDaysText +
+                              DateFormat('MMM dd').format(task!.date),
+                          style: TextStyle(
+                            color: remainingDaysText == 'Missing, '
+                                ? Colors.redAccent
+                                : Colors.blueAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        trailing: Icon(
+                          Icons.flag,
+                          color: priorityColorMap[task.taskPriority.name],
+                        ),
+                      ),
+                      Text(
+                        task.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.87),
+                          fontSize: 25,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        child: TextField(
+                          controller: _taskDescriptionController,
+                          maxLines: 3,
+                          onChanged: (value) {
+                            task.description = _taskDescriptionController.text;
+                            taskProvider.setTaskDescription(
+                              task,
+                              task.description,
+                            );
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Description',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 8,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            ...?task.subTasks?.map((subTask) {
+                              return SubTaskRecord(
+                                task: task,
+                                subTask: subTask,
+                              );
+                            }).toList(),
+                            TextButton.icon(
+                              onPressed: () {
+                                task.subTasks?.add(SubTask());
+                                DatabaseProvider.db.updateTask(task);
+                                print("subTasks=============${task.subTasks}");
+
+                                // taskProvider.addSubTask(
+                                //   task,
+                                //   SubTask(),
+                                // );
+                              },
+                              icon: Icon(Icons.add),
+                              label: Text('Add SubTask'),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                  ),
-                ),
-              ],
+                  );
+                }
+                else if (snapshot.hasError) {
+                  print('===============================${snapshot.error}');
+                }
+                return Center(child: CircularProgressIndicator());
+              },
             ),
           ),
         ),

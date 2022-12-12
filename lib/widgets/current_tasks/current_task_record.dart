@@ -43,6 +43,7 @@ class _TaskRecordState extends State<TaskRecord> {
     //var datePicked = DateTime.parse(widget.task.date);
     return GestureDetector(
       onTap: () {
+        print("========================${widget.task.toString()}");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => TaskDetails(

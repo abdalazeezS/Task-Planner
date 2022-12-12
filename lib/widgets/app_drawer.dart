@@ -1,10 +1,10 @@
 import 'package:Task_Planner/models/task_category.dart';
 import 'package:Task_Planner/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:Task_Planner/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../Providers/task_provider.dart';
+import '../models/categories.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -50,7 +50,7 @@ class AppDrawer extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: Categories.categoriesList.length,
+              itemCount: Categories.categoriesList.length,//10
               itemBuilder: (context, index) {
                 TaskCategory category = Categories.categoriesList[index];
                 return InkWell(

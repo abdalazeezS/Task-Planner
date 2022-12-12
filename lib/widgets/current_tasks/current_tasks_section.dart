@@ -35,7 +35,7 @@ class _TasksSectionState extends State<TasksSection> {
               child: Column(
                 children: [
                   Text(
-                    'All Tasks are Done! Enjoy your time 🤩',
+                    'Your List is empty! Enjoy your time 🤩',
                     style: TextStyle(fontSize: 15),
                   ),
                   Image.asset('assets/images/tasks_img.png'),
@@ -44,16 +44,26 @@ class _TasksSectionState extends State<TasksSection> {
             )
           : Column(
               children: [
-                ...widget.tasksList.asMap().entries.map((e) {
+                ...widget.tasksList.map((task) {
                   return TaskRecord(
-                    task: e.value,
+                    task: task,
                     onChecked: () {
                       setState(() {
-                        widget.onCheck(e.value);
+                        widget.onCheck(task);
                       });
                     },
                   );
-                }).toList()
+                }).toList(),
+                // ...widget.tasksList.asMap().entries.map((e) {
+                //   return TaskRecord(
+                //     task: e.value,
+                //     onChecked: () {
+                //       setState(() {
+                //         widget.onCheck(e.value);
+                //       });
+                //     },
+                //   );
+                // }).toList()
               ],
             ),
     );

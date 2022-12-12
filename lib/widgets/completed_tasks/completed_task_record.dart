@@ -15,7 +15,7 @@ class CompletedTaskRecord extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: (v) {
-        onDrag();
+         onDrag();
       },
       child: ListTile(
         horizontalTitleGap: 1,
