@@ -54,16 +54,6 @@ class _TasksSectionState extends State<TasksSection> {
                     },
                   );
                 }).toList(),
-                // ...widget.tasksList.asMap().entries.map((e) {
-                //   return TaskRecord(
-                //     task: e.value,
-                //     onChecked: () {
-                //       setState(() {
-                //         widget.onCheck(e.value);
-                //       });
-                //     },
-                //   );
-                // }).toList()
               ],
             ),
     );

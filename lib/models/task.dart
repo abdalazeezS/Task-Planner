@@ -12,7 +12,7 @@ class Task {
   TaskPriorityType taskPriority;
   TaskCategory category;
   String? description = '';
-  List<SubTask>? subTasks;
+  List<SubTask>? subTasks = [];
 
   Task({
     this.id,
@@ -33,8 +33,20 @@ class Task {
       isFinished: map['isFinished'] == 1 ? true : false,
       taskPriority: getTaskPriority(map['priority']),
       category: getCategory(map['category']),
-      description: map['description'],
+      description:
+          map['description'] == null ? '' : map['description'] as String,
+      subTasks:
+          map['subTasks'] == null ? [] : getSubTasksFromString(map['subTasks']),
     );
+  }
+
+  static List<SubTask> getSubTasksFromString(String subTasksString) {
+    final splitNames = subTasksString.split(',');
+    List<SubTask> splitList = [];
+    for (int i = 0; i < splitNames.length; i++) {
+      splitList.add(SubTask(title: splitNames[i], isFinished: false));
+    }
+    return splitList;
   }
 
   static TaskPriorityType getTaskPriority(String str) {
@@ -53,6 +65,17 @@ class Task {
         .firstWhere((element) => element.name == category);
   }
 
+  getSubTasksTitles(List<SubTask> list) {
+    if (list.isNotEmpty) {
+      List titles = [];
+      for (int i = 1; i < list.length; i++) {
+        titles.add(list[i].title);
+      }
+      return titles.join(',');
+    }
+    return '';
+  }
+
   Map<String, dynamic> toMap() {
     return {
       "id": id,
@@ -62,7 +85,15 @@ class Task {
       "priority": taskPriority.name,
       "category": category.name,
       "description": description,
-      // "subTasks": subTasks?.join(", ")
+      "subTasks": subTasks == null ? [] : getSubTasksTitles(subTasks!),
     };
+  }
+
+  subTasksToString() {
+    String str = '';
+    for (int i = 0; i < subTasks!.length; i++) {
+      str += subTasks![i].title!;
+    }
+    return str;
   }
 }

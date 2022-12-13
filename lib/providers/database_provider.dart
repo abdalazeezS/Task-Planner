@@ -1,3 +1,4 @@
+import 'package:Task_Planner/models/sub_task.dart';
 import 'package:Task_Planner/models/task.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -46,7 +47,6 @@ class DatabaseProvider extends ChangeNotifier {
     var res = await myDb!.insert('tasks', task.toMap());
     // print('===========================================${res}');
     return res;
-    // await db.rawInsert('insert into tasks (title) values (\'test title\')');
   }
 
   Future<List<Task>> getTasks() async {
@@ -73,24 +73,35 @@ class DatabaseProvider extends ChangeNotifier {
     return tasks;
   }
 
-  getSubTasks(Task task) async {
+  Future<String?> getSubTasks(Task task) async {
     Database? myDb = await database;
     List<Map<String, Object?>> res = await myDb!.rawQuery(
       'SELECT * FROM tasks WHERE id=${task.id}',
     );
-    var subTasksAsString = res[0]['subTasks'] as String;
-    print("===========================" + subTasksAsString);
-    // return tasks;
+    // print("getSubTaskResult========================${res}");
+    var subTasksAsString = res[0]['subTasks'];
+    if (subTasksAsString == null)
+      return '';
+    else
+      return subTasksAsString as String;
   }
 
   updateTask(Task task) async {
     final db = await database;
-    return await db
+    var res = await db
         ?.update('tasks', task.toMap(), where: 'id=?', whereArgs: [task.id]);
+    print('update res =================================${res}');
+    notifyListeners();
+    return res;
   }
 
   removeTask(int id) async {
     final db = await database;
-    return await db?.delete('tasks', where: 'id = ?', whereArgs: [id]);
+    return await db?.delete('tasks', where: 'id=?', whereArgs: [id]);
+  }
+
+  Future removeAll() async {
+    final db = await database;
+    return await db?.delete('tasks');
   }
 }

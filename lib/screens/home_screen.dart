@@ -213,18 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                       .then((value) =>
                           print('==================================$value'));
-                  // print("======================${res}");
-                  // print("======================${await database.getData()}");
-                  // taskProvider.addTask(
-                  //   Task(
-                  //     title: newTaskController.text,
-                  //     date: taskProvider.taskDate,
-                  //     isFinished: false,
-                  //     category: taskProvider.taskCategory,
-                  //     taskPriority: taskProvider.taskPriority,
-                  //     subTasks: [],
-                  //   ),
-                  // );
+
                   Navigator.of(context).pop();
                   setState(() {});
                   newTaskController.clear();

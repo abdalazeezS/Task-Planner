@@ -1,3 +1,4 @@
+import 'package:Task_Planner/providers/database_provider.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -24,7 +25,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: Text(widget.title),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () async{
+            await DatabaseProvider.db.removeAll();
+          },
           icon: Icon(Icons.more_vert),
         ),
       ],
